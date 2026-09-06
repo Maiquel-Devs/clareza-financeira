@@ -16,6 +16,7 @@ import androidx.room.TypeConverters
 abstract class FinancialDatabase : RoomDatabase() {
     abstract fun movementDao(): MovementDao
     abstract fun recurrenceDao(): RecurrenceDao
+    abstract fun monthlyAnalysisDao(): MonthlyAnalysisDao
 
     companion object {
         @Volatile private var instance: FinancialDatabase? = null
