@@ -1,7 +1,0 @@
-#Sun Sep 06 13:41:34 BRT 2026
-base.0=C\:\\Users\\Maiquel\\Documents\\Estudos\\clareza-financeira\\app\\build\\intermediates\\dex\\release\\mergeDexRelease\\classes.dex
-base.1=C\:\\Users\\Maiquel\\Documents\\Estudos\\clareza-financeira\\app\\build\\intermediates\\dex\\release\\mergeDexRelease\\classes2.dex
-path.0=classes.dex
-path.1=classes2.dex
-renamed.0=classes.dex
-renamed.1=classes2.dex

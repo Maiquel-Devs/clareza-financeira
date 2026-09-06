@@ -1,3 +1,0 @@
-com.clarezafinanceira.app
-string app_name
-style Theme_ClarezaFinanceira
