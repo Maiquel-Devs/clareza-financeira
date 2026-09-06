@@ -1,0 +1,8 @@
+com.clarezafinanceira.app-pngs-0 C:\Users\Maiquel\Documents\Estudos\clareza-financeira\app\build\generated\res\pngs\release
+com.clarezafinanceira.app-updated_navigation_xml-1 C:\Users\Maiquel\Documents\Estudos\clareza-financeira\app\build\generated\updated_navigation_xml\release
+com.clarezafinanceira.app-packageReleaseResources-2 C:\Users\Maiquel\Documents\Estudos\clareza-financeira\app\build\intermediates\incremental\release\packageReleaseResources\merged.dir
+com.clarezafinanceira.app-packageReleaseResources-3 C:\Users\Maiquel\Documents\Estudos\clareza-financeira\app\build\intermediates\incremental\release\packageReleaseResources\stripped.dir
+com.clarezafinanceira.app-release-4 C:\Users\Maiquel\Documents\Estudos\clareza-financeira\app\build\intermediates\merged_res\release\mergeReleaseResources
+com.clarezafinanceira.app-main-5 C:\Users\Maiquel\Documents\Estudos\clareza-financeira\app\src\main\res
+com.clarezafinanceira.app-release-6 C:\Users\Maiquel\Documents\Estudos\clareza-financeira\app\src\release\res
+gradleHome-0 C:\Users\Maiquel\.gradle

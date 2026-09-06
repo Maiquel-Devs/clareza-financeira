@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<incidents format="6" by="lint 9.3.2" type="incidents">
+
+    <incident
+        id="AndroidGradlePluginVersion"
+        severity="warning"
+        message="A newer version of Gradle than 9.5.0 is available: 9.7.1">
+        <fix-replace
+            description="Update to 9.7.1"
+            oldString="9.5.0"
+            replacement="9.7.1"
+            priority="0"/>
+        <location
+            file="$HOME/Documents/Estudos/clareza-financeira/gradle/wrapper/gradle-wrapper.properties"
+            line="3"
+            column="17"
+            startOffset="81"
+            endLine="3"
+            endColumn="80"
+            endOffset="144"/>
+    </incident>
+
+</incidents>
