@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#111827" />
+  <title>Clareza Financeira — Protótipo</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <main class="app-shell">
+    <section id="screen-welcome" class="screen active">
+      <div class="welcome">
+        <div class="brand-mark">CF</div>
+        <p class="eyebrow">Clareza financeira</p>
+        <h1>Entenda seu dinheiro sem complicação.</h1>
+        <p class="lead">Registre sua renda e seus gastos e veja rapidamente quanto entra, quanto sai, quanto sobra da renda e para onde o dinheiro está indo.</p>
+        <button class="btn primary" data-go="screen-first-income">Começar</button>
+        <button class="btn ghost" id="explore-first">Explorar primeiro <span class="test-chip">teste</span></button>
+      </div>
+    </section>
+
+    <section id="screen-first-income" class="screen">
+      <header class="topbar">
+        <button class="plain-back-btn" data-go="screen-welcome" aria-label="Voltar">
+          <svg class="back-svg" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M15 5l-7 7 7 7"></path>
+          </svg>
+        </button>
+        <div>
+          <p class="eyebrow">Primeiro acesso</p>
+          <h2>Sua primeira renda</h2>
+        </div>
+      </header>
+      <p class="muted section-copy">Adicione uma renda para montar sua primeira análise. Você poderá complementar tudo depois.</p>
+      <form id="first-income-form" class="form">
+        <div class="field">
+          <label for="first-income-name">Origem</label>
+          <input id="first-income-name" type="text" placeholder="Ex.: Salário" />
+          <small class="field-error" data-error-for="first-income-name"></small>
+        </div>
+        <div class="field">
+          <label for="first-income-value">Valor</label>
+          <input id="first-income-value" type="number" min="0.01" step="0.01" inputmode="decimal" placeholder="0,00" />
+          <small class="field-error" data-error-for="first-income-value"></small>
+        </div>
+        <label class="switch-row">
+          <span>
+            <strong>Acontece todo mês?</strong>
+            <small>O normal será considerado automaticamente.</small>
+          </span>
+          <input id="first-income-recurring" type="checkbox" checked />
+        </label>
+        <div id="first-income-oneoff" class="conditional hidden">
+          <div class="field">
+            <label for="first-income-date">Data</label>
+            <input id="first-income-date" type="date" />
+          </div>
+        </div>
+        <div id="first-income-recurring-fields" class="conditional">
+          <div class="field">
+            <label for="first-income-start">Começa em</label>
+            <input id="first-income-start" type="month" />
+          </div>
+          <div class="field">
+            <label for="first-income-day">Dia habitual</label>
+            <input id="first-income-day" type="number" min="1" max="31" value="5" />
+          </div>
+        </div>
+        <button class="btn primary" type="submit">Continuar</button>
+      </form>
+    </section>
+
+    <section id="screen-onboarding-expenses" class="screen">
+      <header class="topbar">
+        <button class="plain-back-btn" data-go="screen-first-income" aria-label="Voltar">
+          <svg class="back-svg" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M15 5l-7 7 7 7"></path>
+          </svg>
+        </button>
+        <div>
+          <p class="eyebrow">Opcional</p>
+          <h2>Gastos que você já conhece</h2>
+        </div>
+      </header>
+      <p class="muted section-copy">Adicione alguns gastos mensais se quiser deixar a primeira análise mais completa. Você pode ir para o Dashboard a qualquer momento.</p>
+      <div id="onboarding-recurring-list" class="list compact-list"></div>
+      <button class="btn secondary" id="add-onboarding-recurring">+ Adicionar gasto mensal</button>
+      <button class="btn primary" id="finish-onboarding">Ver minha análise</button>
+    </section>
+
+    <section id="screen-dashboard" class="screen">
+      <header class="dashboard-header">
+        <button class="icon-btn dashboard-add-btn" id="header-add" aria-label="Adicionar movimentação">
+          <svg class="add-svg" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M12 6v12M6 12h12"></path>
+          </svg>
+        </button>
+
+        <button class="plain-back-btn dashboard-history-back hidden" id="dashboard-history-back" aria-label="Voltar ao histórico">
+          <svg class="back-svg" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M15 5l-7 7 7 7"></path>
+          </svg>
+        </button>
+
+        <div class="period-label" id="period-label" aria-label="Período selecionado"></div>
+
+        <button class="icon-btn history-btn" id="open-history" aria-label="Abrir histórico de meses" title="Histórico">
+          <svg class="history-svg" viewBox="0 0 24 24" aria-hidden="true">
+            <rect x="4" y="5.5" width="16" height="14" rx="2.5"></rect>
+            <path d="M8 3.5v4M16 3.5v4M4 9.5h16"></path>
+            <path d="M8 13h3M13 13h3M8 16h3"></path>
+          </svg>
+        </button>
+
+        <div class="dashboard-header-spacer hidden" id="dashboard-header-spacer" aria-hidden="true"></div>
+      </header>
+
+      <div id="dashboard-empty" class="empty-state hidden">
+        <div class="empty-icon">○</div>
+        <h2>Nenhuma informação neste período</h2>
+        <p>Adicione uma renda ou gasto para começar a análise deste mês.</p>
+      </div>
+
+      <div id="dashboard-content">
+        <div class="summary-grid">
+          <div class="summary-card">
+            <span>Renda</span>
+            <strong id="income-total">R$ 0,00</strong>
+          </div>
+
+          <div class="summary-card">
+            <span>Despesas registradas</span>
+            <strong id="registered-expense-total">R$ 0,00</strong>
+          </div>
+
+          <div class="summary-card full-card">
+            <span>Previsão de despesas do mês</span>
+            <strong id="forecast-expense-total">R$ 0,00</strong>
+          </div>
+
+          <div class="summary-card highlight-card">
+            <span id="difference-label">Sobra prevista da renda</span>
+            <strong id="difference-total">R$ 0,00</strong>
+          </div>
+        </div>
+
+        <div id="forecast-explanation" class="insight">
+          A previsão considera as despesas já registradas e os gastos mensais cadastrados.
+        </div>
+
+        <div id="ratio-message" class="insight secondary-insight"></div>
+        <section class="section-block">
+          <div class="section-heading">
+            <div>
+              <p class="eyebrow">Análise</p>
+              <h2>De onde vem e para onde vai</h2>
+            </div>
+          </div>
+
+          <div class="analysis-group">
+            <div class="analysis-group-title">
+              <span>Renda</span>
+              <small>De onde o dinheiro vem</small>
+            </div>
+            <div id="income-source-list" class="category-list"></div>
+          </div>
+
+          <div class="analysis-group">
+            <div class="analysis-group-title">
+              <span>Despesas</span>
+              <small>Para onde o dinheiro vai</small>
+            </div>
+            <div id="category-list" class="category-list"></div>
+          </div>
+        </section>
+
+        <section class="section-block chart-section">
+          <div class="section-heading">
+            <div>
+              <p class="eyebrow">Visualização</p>
+              <h2>Gráfico das despesas</h2>
+            </div>
+          </div>
+
+          <button class="chart-toggle-btn" id="toggle-chart-btn" aria-expanded="false" aria-controls="chart-card">
+            Ver gráfico das despesas
+          </button>
+
+          <div class="chart-card hidden" id="chart-card">
+            <p class="chart-helper">Distribuição das despesas por categoria no período selecionado.</p>
+            <div id="expense-chart" class="expense-chart"></div>
+          </div>
+        </section>
+      </div>
+
+    </section>
+
+    <section id="screen-expense-form" class="screen">
+      <header class="topbar">
+        <button class="plain-back-btn back-context" aria-label="Voltar">
+          <svg class="back-svg" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M15 5l-7 7 7 7"></path>
+          </svg>
+        </button>
+        <div>
+          <p class="eyebrow" id="expense-form-eyebrow">Movimentação</p>
+          <h2 id="expense-form-title">Novo gasto</h2>
+        </div>
+      </header>
+      <form id="expense-form" class="form">
+        <div class="field">
+          <label for="expense-description">Descrição</label>
+          <input id="expense-description" type="text" placeholder="Ex.: Mercado" />
+          <small class="field-error" data-error-for="expense-description"></small>
+        </div>
+        <div class="field">
+          <label for="expense-category">Categoria</label>
+          <select id="expense-category">
+            <option>Alimentação</option>
+            <option>Moradia</option>
+            <option>Transporte</option>
+            <option>Lazer</option>
+            <option>Saúde</option>
+            <option>Outros</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="expense-value">Valor</label>
+          <input id="expense-value" type="number" min="0.01" step="0.01" inputmode="decimal" placeholder="0,00" />
+          <small class="field-error" data-error-for="expense-value"></small>
+        </div>
+        <label class="switch-row" id="expense-recurring-row">
+          <span>
+            <strong>Acontece todo mês?</strong>
+            <small id="expense-recurring-help">Você poderá alterar só um mês depois.</small>
+          </span>
+          <input id="expense-recurring" type="checkbox" />
+        </label>
+        <div id="expense-oneoff-fields" class="conditional">
+          <div class="field">
+            <label for="expense-date">Data</label>
+            <input id="expense-date" type="date" />
+          </div>
+        </div>
+        <div id="expense-recurring-fields" class="conditional hidden">
+          <div class="field">
+            <label for="expense-start">Começa em</label>
+            <input id="expense-start" type="month" />
+          </div>
+          <div class="field">
+            <label for="expense-day">Dia habitual</label>
+            <input id="expense-day" type="number" min="1" max="31" value="10" />
+          </div>
+        </div>
+        <button class="btn primary" type="submit" id="expense-save">Salvar gasto</button>
+      </form>
+    </section>
+
+    <section id="screen-income-form" class="screen">
+      <header class="topbar">
+        <button class="plain-back-btn back-context" aria-label="Voltar">
+          <svg class="back-svg" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M15 5l-7 7 7 7"></path>
+          </svg>
+        </button>
+        <div>
+          <p class="eyebrow">Movimentação</p>
+          <h2 id="income-form-title">Nova renda</h2>
+        </div>
+      </header>
+      <form id="income-form" class="form">
+        <div class="field">
+          <label for="income-name">Origem</label>
+          <input id="income-name" type="text" placeholder="Ex.: Freelance" />
+          <small class="field-error" data-error-for="income-name"></small>
+        </div>
+        <div class="field">
+          <label for="income-value">Valor</label>
+          <input id="income-value" type="number" min="0.01" step="0.01" inputmode="decimal" placeholder="0,00" />
+          <small class="field-error" data-error-for="income-value"></small>
+        </div>
+        <label class="switch-row" id="income-recurring-row">
+          <span>
+            <strong>Acontece todo mês?</strong>
+            <small>Receitas recorrentes entram automaticamente na análise.</small>
+          </span>
+          <input id="income-recurring" type="checkbox" />
+        </label>
+        <div id="income-oneoff-fields" class="conditional">
+          <div class="field">
+            <label for="income-date">Data</label>
+            <input id="income-date" type="date" />
+          </div>
+        </div>
+        <div id="income-recurring-fields" class="conditional hidden">
+          <div class="field">
+            <label for="income-start">Começa em</label>
+            <input id="income-start" type="month" />
+          </div>
+          <div class="field">
+            <label for="income-day">Dia habitual</label>
+            <input id="income-day" type="number" min="1" max="31" value="5" />
+          </div>
+        </div>
+        <button class="btn primary" type="submit" id="income-save">Salvar renda</button>
+      </form>
+    </section>
+
+    <section id="screen-list" class="screen">
+      <header class="topbar">
+        <button class="plain-back-btn" data-go="screen-dashboard" aria-label="Voltar">
+          <svg class="back-svg" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M15 5l-7 7 7 7"></path>
+          </svg>
+        </button>
+        <div>
+          <p class="eyebrow" id="list-eyebrow">Detalhes do mês</p>
+          <h2 id="list-title">Despesas</h2>
+        </div>
+      </header>
+      <div id="movement-list" class="list"></div>
+    </section>
+
+    <section id="screen-detail" class="screen">
+      <header class="topbar">
+        <button class="plain-back-btn" id="detail-back" aria-label="Voltar">
+          <svg class="back-svg" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M15 5l-7 7 7 7"></path>
+          </svg>
+        </button>
+        <div>
+          <p class="eyebrow">Movimentação</p>
+          <h2>Detalhes</h2>
+        </div>
+      </header>
+      <div id="detail-content"></div>
+      <div class="stack-actions">
+        <button class="btn secondary" id="edit-movement">Editar</button>
+        <button class="btn secondary hidden" id="stop-recurring">Parar recorrência</button>
+        <button class="btn danger" id="delete-movement">Excluir</button>
+      </div>
+    </section>
+
+    <section id="screen-history" class="screen">
+      <header class="history-topbar">
+        <button class="plain-back-btn" id="history-back" aria-label="Voltar ao Dashboard">
+          <svg class="back-svg" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M15 5l-7 7 7 7"></path>
+          </svg>
+        </button>
+        <div class="history-title">Histórico</div>
+        <div class="history-header-spacer" aria-hidden="true"></div>
+      </header>
+
+      <div class="year-selector history-year-selector">
+        <button class="icon-btn" id="history-prev-year" aria-label="Ano anterior">
+          <svg class="year-arrow-svg" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M14.5 5.5L8 12l6.5 6.5"></path>
+          </svg>
+        </button>
+        <strong id="history-year"></strong>
+        <button class="icon-btn" id="history-next-year" aria-label="Próximo ano">
+          <svg class="year-arrow-svg" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M9.5 5.5L16 12l-6.5 6.5"></path>
+          </svg>
+        </button>
+      </div>
+
+      <button class="history-chart-toggle-btn" id="toggle-history-chart-btn" aria-expanded="false" aria-controls="history-chart-card">
+        Ver evolução do ano
+      </button>
+
+      <div class="history-chart-card hidden" id="history-chart-card">
+        <p class="history-chart-helper">Comparação da previsão de despesas entre os meses com informações do ano selecionado.</p>
+        <div id="history-year-chart" class="history-year-chart"></div>
+      </div>
+
+      <div id="history-list" class="history-list"></div>
+    </section>
+
+    <div id="sheet-backdrop" class="overlay hidden" aria-hidden="true">
+      <div class="sheet" role="dialog" aria-modal="true" aria-labelledby="sheet-title">
+        <div class="sheet-handle"></div>
+        <h2 id="sheet-title">O que deseja adicionar?</h2>
+        <button class="choice-card" id="choose-expense">
+          <span class="choice-icon" aria-hidden="true">
+            <svg class="choice-svg" viewBox="0 0 24 24">
+              <path d="M6 12h12"></path>
+            </svg>
+          </span>
+          <span><strong>Gasto</strong><small>Registrar uma despesa</small></span>
+        </button>
+        <button class="choice-card" id="choose-income">
+          <span class="choice-icon" aria-hidden="true">
+            <svg class="choice-svg" viewBox="0 0 24 24">
+              <path d="M12 6v12M6 12h12"></path>
+            </svg>
+          </span>
+          <span><strong>Renda</strong><small>Registrar uma entrada</small></span>
+        </button>
+        <button class="btn ghost" id="close-add-sheet">Cancelar</button>
+      </div>
+    </div>
+
+    <div id="scope-backdrop" class="overlay hidden" aria-hidden="true">
+      <div class="sheet" role="dialog" aria-modal="true">
+        <div class="sheet-handle"></div>
+        <h2 id="scope-title">Aplicar alteração</h2>
+        <p class="muted" id="scope-description"></p>
+        <button class="choice-card" id="scope-this-month"></button>
+        <button class="choice-card" id="scope-from-month"></button>
+        <button class="btn ghost" id="scope-cancel">Cancelar</button>
+      </div>
+    </div>
+
+    <div id="stop-backdrop" class="overlay hidden" aria-hidden="true">
+      <div class="sheet" role="dialog" aria-modal="true">
+        <div class="sheet-handle"></div>
+        <h2>Parar recorrência</h2>
+        <p class="muted" id="stop-description"></p>
+        <button class="choice-card" id="stop-keep-current"></button>
+        <button class="choice-card" id="stop-remove-current"></button>
+        <button class="btn ghost" id="stop-cancel">Cancelar</button>
+      </div>
+    </div>
+
+    <div id="confirm-backdrop" class="overlay hidden" aria-hidden="true">
+      <div class="sheet" role="dialog" aria-modal="true">
+        <div class="sheet-handle"></div>
+        <h2 id="confirm-title">Confirmar</h2>
+        <p class="muted" id="confirm-message"></p>
+        <div class="row-actions">
+          <button class="btn secondary" id="confirm-cancel">Cancelar</button>
+          <button class="btn danger" id="confirm-yes">Excluir</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="toast" class="toast hidden" aria-live="polite"></div>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>

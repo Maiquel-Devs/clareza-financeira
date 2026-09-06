@@ -1,0 +1,745 @@
+*{box-sizing:border-box}html{background:#eef1f5}body{margin:0;font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:#111827;background:#eef1f5}button,input,select{font:inherit}.app-shell{width:min(100%,430px);min-height:100vh;margin:0 auto;background:#fff;position:relative;overflow-x:hidden}.screen{display:none;padding:22px 20px 96px}.screen.active{display:block}.welcome{padding-top:70px}.brand-mark{width:52px;height:52px;border-radius:16px;background:#111827;color:#fff;display:grid;place-items:center;font-weight:800;margin-bottom:28px}.eyebrow{text-transform:uppercase;letter-spacing:.09em;font-size:.72rem;font-weight:800;color:#6b7280;margin:0 0 5px}.welcome h1,.topbar h2,.section-heading h2{margin:0}.welcome h1{font-size:2rem;line-height:1.08;max-width:340px}.lead{font-size:1.02rem;line-height:1.6;color:#6b7280;margin:18px 0 28px}.muted{color:#6b7280;line-height:1.5}.section-copy{margin:6px 0 24px}.btn{border:0;border-radius:14px;min-height:48px;width:100%;padding:13px 16px;font-weight:750;margin-top:10px}.btn.primary{background:#111827;color:#fff}.btn.secondary{background:#f3f4f6;color:#111827}.btn.ghost{background:transparent;color:#4b5563}.btn.danger{background:#fee2e2;color:#991b1b}.test-chip{font-size:.68rem;background:#f3f4f6;border-radius:99px;padding:3px 7px;margin-left:4px}.topbar{display:flex;align-items:center;gap:12px;margin-bottom:18px}.topbar h2{font-size:1.45rem}.icon-btn{border:0;background:#f3f4f6;border-radius:12px;min-width:44px;height:44px;font-size:1.45rem;color:#111827}.form{display:grid;gap:16px}.field label{display:block;font-size:.9rem;font-weight:750;margin-bottom:7px}.field input,.field select{width:100%;min-height:48px;border:1px solid #d1d5db;border-radius:12px;padding:0 13px;font-size:16px;background:#fff;color:#111827;outline:none}.field input:focus,.field select:focus{border-color:#111827;box-shadow:0 0 0 3px rgba(17,24,39,.08)}.field-error{display:block;color:#b91c1c;min-height:16px;font-size:.78rem;margin-top:5px}.switch-row{display:flex;justify-content:space-between;gap:18px;align-items:center;border:1px solid #e5e7eb;border-radius:14px;padding:14px}.switch-row span{display:grid;gap:3px}.switch-row small{color:#6b7280}.switch-row input{width:22px;height:22px}.conditional.hidden,.hidden{display:none!important}.dashboard-header{display:grid;grid-template-columns:44px 1fr 44px;align-items:center;gap:8px;margin-bottom:22px}.period-button{border:0;background:transparent;min-height:44px;border-radius:12px;font-weight:800;font-size:1.05rem}.summary-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}.summary-card{border:1px solid #e5e7eb;background:#fff;border-radius:16px;padding:16px;text-align:left;min-width:0}.summary-card span{display:block;color:#6b7280;font-size:.82rem;margin-bottom:8px}.summary-card strong{font-size:1.28rem;display:block;overflow-wrap:anywhere}.highlight-card{grid-column:1/-1;background:#f7f7f8}.insight{margin:14px 0 24px;padding:14px 15px;border-radius:14px;background:#f3f4f6;line-height:1.45}.section-block{margin-top:8px}.section-heading{display:flex;justify-content:space-between;align-items:end;margin-bottom:10px}.category-list{display:grid}.category-row{display:grid;grid-template-columns:1fr auto;gap:14px;align-items:center;border:0;background:#fff;padding:15px 2px;border-bottom:1px solid #eee;text-align:left}.category-row strong{font-size:.98rem}.category-row small{color:#6b7280}.empty-state{text-align:center;padding:62px 20px}.empty-state h2{font-size:1.35rem}.empty-state p{color:#6b7280;line-height:1.5}.empty-icon{width:50px;height:50px;border-radius:50%;display:grid;place-items:center;background:#f3f4f6;margin:0 auto 16px;font-size:1.4rem}.fab{position:absolute;right:22px;bottom:24px;width:58px;height:58px;border-radius:50%;border:0;background:#111827;color:#fff;font-size:2rem;box-shadow:0 10px 28px rgba(17,24,39,.22)}.list{display:grid}.compact-list{margin:18px 0}.movement-row{width:100%;border:0;background:#fff;border-bottom:1px solid #eee;padding:15px 2px;text-align:left;display:grid;grid-template-columns:1fr auto;gap:14px}.movement-row .meta{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}.badge{font-size:.72rem;background:#f3f4f6;border-radius:99px;padding:3px 7px;color:#4b5563}.movement-row small{color:#6b7280}.detail-card{border:1px solid #e5e7eb;border-radius:16px;padding:17px;margin-bottom:12px}.detail-card span{display:block;color:#6b7280;font-size:.82rem;margin-bottom:5px}.detail-card strong{font-size:1.08rem}.stack-actions{margin-top:20px}.overlay{position:absolute;inset:0;background:rgba(17,24,39,.35);display:flex;align-items:flex-end;z-index:20}.sheet{background:#fff;border-radius:24px 24px 0 0;padding:14px 20px 22px;width:100%}.sheet-handle{width:42px;height:5px;border-radius:99px;background:#d1d5db;margin:0 auto 16px}.sheet h2{margin:0 0 8px}.choice-card{width:100%;border:1px solid #e5e7eb;background:#fff;border-radius:15px;padding:14px;display:flex;align-items:center;gap:12px;text-align:left;margin-top:10px}.choice-card>span:last-child{display:grid;gap:3px}.choice-card small{color:#6b7280}.choice-icon{width:38px;height:38px;border-radius:11px;background:#f3f4f6;display:grid;place-items:center;font-size:1.3rem}.year-selector{display:grid;grid-template-columns:44px 1fr 44px;align-items:center;text-align:center;margin:16px 0 18px}.month-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.month-btn{min-height:48px;border-radius:12px;border:1px solid #e5e7eb;background:#fff;font-weight:700}.month-btn.selected{background:#111827;color:#fff;border-color:#111827}.prototype-note{font-size:.82rem;color:#6b7280;line-height:1.45;margin-top:22px;background:#f9fafb;border-radius:12px;padding:12px}.row-actions{display:grid;grid-template-columns:1fr 1fr;gap:10px}.toast{position:absolute;left:20px;right:20px;bottom:92px;background:#111827;color:#fff;border-radius:12px;padding:12px 14px;font-size:.9rem;z-index:40}.toast.hidden{display:none}@media (min-width:700px){body{padding:28px}.app-shell{min-height:820px;border-radius:28px;box-shadow:0 18px 60px rgba(17,24,39,.12)}.overlay{border-radius:28px}.fab{bottom:26px}}
+.full-card{grid-column:1/-1}
+.secondary-insight{background:#f9fafb;color:#4b5563;margin-top:-12px}
+
+.analysis-group{margin-top:22px}
+.analysis-group:first-of-type{margin-top:16px}
+.analysis-group-title{display:flex;justify-content:space-between;align-items:flex-end;gap:14px;padding:0 2px 8px;border-bottom:1px solid #e5e7eb}
+.analysis-group-title span{font-size:.82rem;font-weight:850;text-transform:uppercase;letter-spacing:.07em;color:#111827}
+.analysis-group-title small{font-size:.76rem;color:#6b7280;text-align:right}
+.income-source-row small{display:inline-block;margin-top:2px}
+.analysis-empty{padding:14px 2px;margin:0}
+.summary-card{cursor:default}
+
+.dashboard-header{
+  grid-template-columns:44px 1fr 44px;
+}
+.period-label{
+  min-height:44px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+  font-weight:850;
+  font-size:1.05rem;
+  color:#111827;
+}
+.dashboard-add-btn{
+  font-size:1.65rem;
+  font-weight:500;
+}
+.history-btn{
+  font-size:1.25rem;
+}
+.history-list{
+  display:grid;
+  gap:12px;
+}
+.history-card{
+  width:100%;
+  border:1px solid #e5e7eb;
+  background:#fff;
+  border-radius:16px;
+  padding:16px;
+  text-align:left;
+}
+.history-card.current{
+  border-color:#111827;
+  box-shadow:0 0 0 1px #111827 inset;
+}
+.history-card-header{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:12px;
+  margin-bottom:12px;
+}
+.history-card-header strong{
+  font-size:1.03rem;
+}
+.current-chip{
+  font-size:.7rem;
+  font-weight:800;
+  text-transform:uppercase;
+  letter-spacing:.06em;
+  background:#f3f4f6;
+  border-radius:99px;
+  padding:4px 8px;
+  color:#4b5563;
+}
+.history-summary{
+  display:grid;
+  gap:8px;
+}
+.history-summary-row{
+  display:flex;
+  justify-content:space-between;
+  gap:18px;
+  font-size:.9rem;
+}
+.history-summary-row span{
+  color:#6b7280;
+}
+.history-empty{
+  text-align:center;
+  color:#6b7280;
+  padding:40px 16px;
+  line-height:1.5;
+}
+
+.history-svg{
+  width:23px;
+  height:23px;
+  fill:none;
+  stroke:currentColor;
+  stroke-width:1.8;
+  stroke-linecap:round;
+  stroke-linejoin:round;
+}
+.history-topbar{
+  display:grid;
+  grid-template-columns:44px 1fr 44px;
+  align-items:center;
+  gap:8px;
+  margin-bottom:18px;
+}
+.history-title{
+  min-height:44px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-weight:850;
+  font-size:1.16rem;
+  color:#111827;
+}
+.history-header-spacer{
+  width:44px;
+  height:44px;
+}
+
+/* V6 — navegação superior */
+.history-svg{
+  width:22px;
+  height:22px;
+  fill:none;
+  stroke:currentColor;
+  stroke-width:1.7;
+  stroke-linecap:round;
+  stroke-linejoin:round;
+}
+
+.back-svg{
+  width:23px;
+  height:23px;
+  fill:none;
+  stroke:currentColor;
+  stroke-width:2;
+  stroke-linecap:round;
+  stroke-linejoin:round;
+}
+
+.history-topbar{
+  display:grid !important;
+  grid-template-columns:56px 1fr 56px !important;
+  align-items:center !important;
+  gap:0 !important;
+  margin:0 0 24px !important;
+}
+
+.history-topbar .icon-btn,
+.history-header-spacer{
+  width:56px;
+  height:56px;
+}
+
+.history-title{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  min-height:56px;
+  font-size:1.2rem;
+  font-weight:850;
+  color:#07152f;
+  text-align:center;
+}
+
+.history-back-btn{
+  justify-self:start;
+}
+
+.history-header-spacer{
+  justify-self:end;
+}
+
+.dashboard-history-back,
+.dashboard-header-spacer{
+  width:56px;
+  height:56px;
+}
+
+.dashboard-history-back{
+  justify-self:start;
+}
+
+.dashboard-header-spacer{
+  justify-self:end;
+}
+
+.plain-back-btn{
+  width:44px;
+  height:44px;
+  border:0;
+  background:transparent;
+  display:grid;
+  place-items:center;
+  color:#07152f;
+  padding:0;
+  cursor:pointer;
+  justify-self:start;
+}
+
+.plain-back-btn:hover{
+  background:#f7f7f8;
+  border-radius:12px;
+}
+
+.history-topbar{
+  grid-template-columns:44px 1fr 44px !important;
+}
+
+.history-header-spacer{
+  width:44px !important;
+  height:44px !important;
+}
+
+/* V8 — mesma seta leve no Histórico e no mês histórico */
+.dashboard-history-back.plain-back-btn{
+  width:44px;
+  height:44px;
+  border:0;
+  background:transparent;
+  border-radius:0;
+  box-shadow:none;
+  padding:0;
+  display:grid;
+  place-items:center;
+  color:#07152f;
+  justify-self:start;
+}
+
+.dashboard-history-back.plain-back-btn:hover{
+  background:#f7f7f8;
+  border-radius:12px;
+}
+
+.dashboard-history-back.plain-back-btn:active{
+  transform:none;
+}
+
+/* V9 — padronização das setas internas */
+.topbar .plain-back-btn,
+.history-topbar .plain-back-btn,
+#screen-list .plain-back-btn,
+#screen-detail .plain-back-btn,
+#screen-expense-form .plain-back-btn,
+#screen-income-form .plain-back-btn{
+  width:44px;
+  height:44px;
+  border:0;
+  background:transparent;
+  padding:0;
+  display:grid;
+  place-items:center;
+  color:#07152f;
+  cursor:pointer;
+  justify-self:start;
+}
+
+.topbar .plain-back-btn:hover,
+.history-topbar .plain-back-btn:hover,
+#screen-list .plain-back-btn:hover,
+#screen-detail .plain-back-btn:hover,
+#screen-expense-form .plain-back-btn:hover,
+#screen-income-form .plain-back-btn:hover{
+  background:#f7f7f8;
+  border-radius:12px;
+}
+
+
+
+/* V11 — correção do bug visual e centralização segura */
+
+/* Hidden must always win over component display rules. */
+.hidden{
+  display:none !important;
+}
+
+/* Dashboard header always keeps exactly three visual columns. */
+.dashboard-header{
+  display:grid;
+  grid-template-columns:56px minmax(0,1fr) 56px;
+  align-items:center;
+  column-gap:12px;
+}
+
+.dashboard-header > *{
+  min-width:0;
+}
+
+.period-label{
+  width:100%;
+  min-height:56px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+  white-space:nowrap;
+  line-height:1.15;
+}
+
+/* Generic icon buttons: centered without overriding .hidden */
+.icon-btn,
+.plain-back-btn,
+.dashboard-add-btn,
+.dashboard-history-back,
+.history-btn{
+  box-sizing:border-box;
+  padding:0;
+  line-height:1;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+}
+
+.icon-btn,
+.dashboard-add-btn,
+.history-btn{
+  display:flex;
+}
+
+.plain-back-btn,
+.dashboard-history-back{
+  display:grid;
+  place-items:center;
+}
+
+/* Dashboard side buttons have identical geometry. */
+.dashboard-add-btn,
+.history-btn,
+.dashboard-history-back,
+.dashboard-header-spacer{
+  width:56px;
+  height:56px;
+}
+
+.dashboard-add-btn{
+  justify-self:start;
+  font-size:1.55rem;
+}
+
+.history-btn,
+.dashboard-header-spacer{
+  justify-self:end;
+}
+
+.dashboard-history-back{
+  justify-self:start;
+}
+
+/* SVGs centered by their own box. */
+.history-svg,
+.back-svg{
+  width:22px;
+  height:22px;
+  display:block;
+  margin:0;
+  flex:0 0 auto;
+}
+
+/* History year navigation: same centered geometry on both sides. */
+.year-selector{
+  display:grid;
+  grid-template-columns:56px minmax(0,1fr) 56px;
+  align-items:center;
+  column-gap:12px;
+}
+
+.year-selector .icon-btn{
+  width:56px;
+  height:56px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:0;
+  line-height:1;
+}
+
+.year-selector > strong{
+  text-align:center;
+  line-height:1.15;
+}
+
+/* Bottom-sheet choice icons */
+.choice-card{
+  display:flex;
+  align-items:center;
+}
+
+.choice-icon{
+  width:38px;
+  height:38px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  flex:0 0 38px;
+  padding:0;
+  line-height:1;
+  font-size:1.15rem;
+}
+
+.choice-card > span:last-child{
+  align-self:center;
+}
+
+/* Internal topbars keep the same clean vertical rhythm. */
+.topbar,
+.history-topbar{
+  align-items:center;
+}
+
+.topbar .plain-back-btn,
+.history-topbar .plain-back-btn{
+  width:44px;
+  height:44px;
+  display:grid;
+  place-items:center;
+  padding:0;
+}
+
+/* V12 — SVGs para evitar desalinhamento de baseline da fonte */
+.choice-svg{
+  width:19px;
+  height:19px;
+  display:block;
+  fill:none;
+  stroke:currentColor;
+  stroke-width:2;
+  stroke-linecap:round;
+  stroke-linejoin:round;
+  margin:0;
+}
+
+.year-arrow-svg{
+  width:21px;
+  height:21px;
+  display:block;
+  fill:none;
+  stroke:currentColor;
+  stroke-width:2;
+  stroke-linecap:round;
+  stroke-linejoin:round;
+  margin:0;
+}
+
+.choice-icon{
+  display:flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+}
+
+#history-prev-year,
+#history-next-year{
+  display:flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+}
+
+/* V13 — SVG também no + do Dashboard */
+.add-svg{
+  width:21px;
+  height:21px;
+  display:block;
+  fill:none;
+  stroke:currentColor;
+  stroke-width:2;
+  stroke-linecap:round;
+  stroke-linejoin:round;
+  margin:0;
+  flex:0 0 auto;
+}
+
+/* Centralização consistente para botões compactos */
+.dashboard-add-btn,
+.history-btn,
+.plain-back-btn,
+.dashboard-history-back,
+.year-selector .icon-btn,
+.choice-icon{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+
+.dashboard-add-btn .add-svg,
+.history-btn .history-svg,
+.plain-back-btn .back-svg,
+.dashboard-history-back .back-svg,
+.year-selector .year-arrow-svg,
+.choice-icon .choice-svg{
+  display:block;
+  margin:0;
+  flex:0 0 auto;
+}
+
+/* V14 — gráfico simples de despesas por categoria */
+.chart-section{
+  margin-top:8px;
+}
+
+.chart-card{
+  border:1px solid #e5e7eb;
+  border-radius:20px;
+  background:#fff;
+  padding:18px 16px 14px;
+}
+
+.chart-helper{
+  margin:0 0 16px;
+  color:#6b7280;
+  line-height:1.45;
+}
+
+.expense-chart{
+  display:grid;
+  gap:14px;
+}
+
+.chart-empty{
+  margin:0;
+  color:#6b7280;
+  line-height:1.5;
+}
+
+.chart-row{
+  display:grid;
+  gap:8px;
+}
+
+.chart-row-top{
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-end;
+  gap:12px;
+}
+
+.chart-label{
+  font-weight:800;
+  color:#07152f;
+}
+
+.chart-meta{
+  color:#6b7280;
+  font-size:.92rem;
+}
+
+.chart-value{
+  font-weight:800;
+  color:#07152f;
+  white-space:nowrap;
+}
+
+.chart-track{
+  width:100%;
+  height:12px;
+  border-radius:999px;
+  background:#eef1f5;
+  overflow:hidden;
+}
+
+.chart-fill{
+  height:100%;
+  border-radius:999px;
+  background:#0f172a;
+  min-width:8px;
+}
+
+.chart-share{
+  color:#6b7280;
+  font-size:.85rem;
+  text-align:right;
+}
+
+/* V15 — gráfico recolhido por padrão com botão de ação */
+.chart-toggle-btn{
+  width:100%;
+  min-height:56px;
+  border:1px solid #e5e7eb;
+  border-radius:18px;
+  background:#ffffff;
+  color:#07152f;
+  font-weight:800;
+  font-size:1rem;
+  text-align:center;
+  padding:14px 18px;
+  cursor:pointer;
+}
+
+.chart-toggle-btn:hover{
+  background:#f9fafb;
+}
+
+.chart-toggle-btn[aria-expanded="true"]{
+  margin-bottom:14px;
+}
+
+/* V17 — gráfico opcional na tela de Histórico */
+.history-chart-toggle-btn{
+  width:100%;
+  min-height:56px;
+  border:1px solid #e5e7eb;
+  border-radius:18px;
+  background:#ffffff;
+  color:#07152f;
+  font-weight:800;
+  font-size:1rem;
+  text-align:center;
+  padding:14px 18px;
+  cursor:pointer;
+  margin:0 0 16px;
+}
+
+.history-chart-toggle-btn:hover{
+  background:#f9fafb;
+}
+
+.history-chart-toggle-btn[aria-expanded="true"]{
+  margin-bottom:14px;
+}
+
+.history-chart-card{
+  border:1px solid #e5e7eb;
+  border-radius:20px;
+  background:#fff;
+  padding:18px 16px 14px;
+  margin-bottom:18px;
+}
+
+.history-chart-helper{
+  margin:0 0 16px;
+  color:#6b7280;
+  line-height:1.45;
+}
+
+.history-year-chart{
+  display:grid;
+  gap:14px;
+}
+
+.history-chart-empty{
+  margin:0;
+  color:#6b7280;
+  line-height:1.5;
+}
+
+.history-chart-row{
+  display:grid;
+  gap:8px;
+}
+
+.history-chart-row-top{
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-end;
+  gap:12px;
+}
+
+.history-chart-label{
+  font-weight:800;
+  color:#07152f;
+}
+
+.history-chart-meta{
+  color:#6b7280;
+  font-size:.92rem;
+}
+
+.history-chart-value{
+  font-weight:800;
+  color:#07152f;
+  white-space:nowrap;
+}
+
+.history-chart-track{
+  width:100%;
+  height:12px;
+  border-radius:999px;
+  background:#eef1f5;
+  overflow:hidden;
+}
+
+.history-chart-fill{
+  height:100%;
+  border-radius:999px;
+  background:#0f172a;
+  min-width:8px;
+}
+
+/* V21 — ajuste de espaçamento do formulário de Novo gasto */
+#expense-form{
+  gap:12px;
+}
+
+#expense-form > .field{
+  margin-bottom:0;
+}
+
+#expense-form .field label{
+  margin-bottom:7px;
+}
+
+#expense-form #expense-recurring-row{
+  margin-top:10px;
+  margin-bottom:2px;
+}
+
+#expense-form #expense-oneoff-fields,
+#expense-form #expense-recurring-fields{
+  margin-top:2px;
+}
+
+#expense-form .btn.primary{
+  margin-top:14px;
+}
+
+/* V23 — indicação visual de itens clicáveis */
+.movement-row.clickable-row{
+  align-items:center;
+  transition:background-color .16s ease, transform .08s ease;
+}
+
+.movement-row.clickable-row:hover{
+  background:#f9fafb;
+}
+
+.movement-row.clickable-row:active{
+  background:#f3f4f6;
+}
+
+.movement-row-end{
+  display:flex;
+  align-items:center;
+  justify-content:flex-end;
+  gap:8px;
+  min-width:0;
+}
+
+.row-chevron{
+  width:18px;
+  height:18px;
+  flex:0 0 18px;
+  fill:none;
+  stroke:#6b7280;
+  stroke-width:2;
+  stroke-linecap:round;
+  stroke-linejoin:round;
+}
