@@ -1,47 +1,32 @@
 package com.clarezafinanceira.app
 
+import android.graphics.Color
 import android.os.Bundle
 import androidx.activity.ComponentActivity
+import androidx.activity.SystemBarStyle
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.activity.enableEdgeToEdge
+import androidx.lifecycle.ViewModelProvider
+import com.clarezafinanceira.app.presentation.MonthlyAnalysisViewModel
+import com.clarezafinanceira.app.presentation.dashboard.DashboardRoute
+import com.clarezafinanceira.app.presentation.dashboard.DashboardTheme
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        enableEdgeToEdge(
+            statusBarStyle = SystemBarStyle.light(Color.TRANSPARENT, Color.TRANSPARENT),
+            navigationBarStyle = SystemBarStyle.auto(Color.TRANSPARENT, Color.TRANSPARENT) { false },
+        )
+        val container = (application as ClarezaFinanceiraApplication).container
+        val viewModel = ViewModelProvider.create(this, container.monthlyAnalysisViewModelFactory)[
+            MonthlyAnalysisViewModel::class.java
+        ]
         setContent {
-            ClarezaFinanceiraApp()
-        }
-    }
-}
-
-@Composable
-private fun ClarezaFinanceiraApp() {
-    MaterialTheme {
-        Surface(
-            modifier = Modifier.fillMaxSize(),
-            color = MaterialTheme.colorScheme.background,
-        ) {
-            Box(
-                modifier = Modifier.fillMaxSize(),
-                contentAlignment = Alignment.Center,
-            ) {
-                Text(text = "Clareza Financeira")
+            DashboardTheme {
+                DashboardRoute(viewModel)
             }
         }
     }
-}
-
-@Preview(showBackground = true)
-@Composable
-private fun ClarezaFinanceiraAppPreview() {
-    ClarezaFinanceiraApp()
 }

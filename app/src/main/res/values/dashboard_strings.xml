@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="dashboard_subtitle">Seu mês, com mais clareza.</string>
+    <string name="dashboard_loading">Carregando sua análise…</string>
+    <string name="dashboard_error_title">Não foi possível carregar a análise deste período.</string>
+    <string name="dashboard_error_message">Tente abrir o aplicativo novamente em alguns instantes.</string>
+    <string name="dashboard_empty_title">Nenhuma informação neste período.</string>
+    <string name="dashboard_empty_message">Adicione uma renda ou gasto para começar a análise deste mês.</string>
+    <string name="dashboard_income">Renda</string>
+    <string name="dashboard_registered">Despesas registradas</string>
+    <string name="dashboard_forecast">Previsão de despesas do mês</string>
+    <string name="dashboard_remaining">Sobra prevista da renda</string>
+    <string name="dashboard_unavailable">Não disponível</string>
+    <string name="dashboard_remaining_unavailable">Informe uma renda para conhecer a sobra prevista.</string>
+    <string name="dashboard_over_income">As despesas previstas ultrapassam a renda deste mês.</string>
+    <string name="dashboard_forecast_explanation">A previsão considera as despesas já registradas e os gastos mensais conhecidos.</string>
+    <string name="dashboard_percentage">A previsão de despesas representa %1$s da sua renda neste mês.</string>
+    <string name="dashboard_no_income">Nenhuma renda informada neste mês.</string>
+    <string name="dashboard_analysis_title">De onde vem e para onde vai</string>
+    <string name="dashboard_income_section">RENDA</string>
+    <string name="dashboard_income_description">De onde o dinheiro vem</string>
+    <string name="dashboard_expense_section">DESPESAS</string>
+    <string name="dashboard_expense_description">Para onde o dinheiro vai</string>
+    <string name="dashboard_monthly">Mensal</string>
+    <string name="dashboard_one_off">Pontual</string>
+    <string name="dashboard_no_income_sources">Nenhuma fonte de renda neste período.</string>
+    <string name="dashboard_no_expenses">Nenhuma despesa prevista neste mês.</string>
+    <plurals name="dashboard_expense_count">
+        <item quantity="one">%d gasto</item>
+        <item quantity="other">%d gastos</item>
+    </plurals>
+    <string name="category_food">Alimentação</string>
+    <string name="category_housing">Moradia</string>
+    <string name="category_transport">Transporte</string>
+    <string name="category_leisure">Lazer</string>
+    <string name="category_health">Saúde</string>
+    <string name="category_other">Outros</string>
+</resources>
