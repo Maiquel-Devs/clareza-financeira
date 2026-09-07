@@ -19,6 +19,7 @@ data class MovementEntity(
 ) {
     init {
         require(id.isNotBlank())
+        require(name.isNotBlank())
         require(amountCents > 0)
         validateCategory(type, category)
     }

@@ -8,7 +8,6 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.lifecycle.ViewModelProvider
 import com.clarezafinanceira.app.presentation.MonthlyAnalysisViewModel
-import com.clarezafinanceira.app.presentation.dashboard.DashboardRoute
 import com.clarezafinanceira.app.presentation.dashboard.DashboardTheme
 
 class MainActivity : ComponentActivity() {
@@ -25,7 +24,7 @@ class MainActivity : ComponentActivity() {
         ]
         setContent {
             DashboardTheme {
-                DashboardRoute(viewModel)
+                com.clarezafinanceira.app.presentation.entry.EntryNavigation(container, viewModel)
             }
         }
     }

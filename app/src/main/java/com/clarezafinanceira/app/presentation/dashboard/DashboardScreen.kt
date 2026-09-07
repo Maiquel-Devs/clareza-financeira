@@ -44,21 +44,23 @@ import com.clarezafinanceira.app.presentation.MonthlyAnalysisUiState
 import com.clarezafinanceira.app.presentation.MonthlyAnalysisViewModel
 
 @Composable
-fun DashboardRoute(viewModel: MonthlyAnalysisViewModel) {
+fun DashboardRoute(viewModel: MonthlyAnalysisViewModel, onAdd: (() -> Unit)? = null,
+    onEdit: ((String) -> Unit)? = null) {
     val state by viewModel.uiState.collectAsStateWithLifecycle()
-    DashboardScreen(state)
+    DashboardScreen(state, onAdd = onAdd, onEdit = onEdit)
 }
 
 /** Stateless UI: only domain analysis and explicit loading/error states enter this screen. */
 @Composable
-fun DashboardScreen(state: MonthlyAnalysisUiState, modifier: Modifier = Modifier) {
+fun DashboardScreen(state: MonthlyAnalysisUiState, modifier: Modifier = Modifier,
+    onAdd: (() -> Unit)? = null, onEdit: ((String) -> Unit)? = null) {
     Surface(modifier = modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
         Box(Modifier.safeDrawingPadding(), contentAlignment = Alignment.TopCenter) {
             // A new period starts at the top; its title and content always use the same state.
             key(state.period) {
                 LazyColumn(
                     modifier = Modifier.widthIn(max = 600.dp).fillMaxSize(),
-                    contentPadding = PaddingValues(horizontal = 20.dp, vertical = 24.dp),
+                    contentPadding = PaddingValues(start = 20.dp, end = 20.dp, top = 24.dp, bottom = 100.dp),
                     verticalArrangement = Arrangement.spacedBy(12.dp),
                 ) {
                     item(key = "header") {
@@ -107,11 +109,25 @@ fun DashboardScreen(state: MonthlyAnalysisUiState, modifier: Modifier = Modifier
                                 }
                             } else {
                                 analysisContent(state.analysis)
+                                if (onEdit != null) {
+                                    item { Text("Editar movimentações pontuais", style = MaterialTheme.typography.titleMedium) }
+                                    items((state.analysis.incomeSources + state.analysis.expenseItems)
+                                        .filter { it.origin == ItemOrigin.MOVEMENT }, key = { "edit-${it.sourceId}" }) { entry ->
+                                        androidx.compose.material3.TextButton(onClick = { onEdit(entry.sourceId) },
+                                            modifier = Modifier.fillMaxWidth()) {
+                                            Text("Editar ${entry.name} · ${DashboardFormatting.money(entry.amountCents)}")
+                                        }
+                                    }
+                                }
                             }
                         }
                     }
                 }
             }
+            if (onAdd != null) androidx.compose.material3.ExtendedFloatingActionButton(
+                onClick = onAdd,
+                modifier = Modifier.align(Alignment.BottomEnd).padding(20.dp),
+            ) { Text("+ Adicionar") }
         }
     }
 }
