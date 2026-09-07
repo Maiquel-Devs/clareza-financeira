@@ -4,6 +4,7 @@ import com.clarezafinanceira.app.data.local.FinancialDatabase
 import com.clarezafinanceira.app.data.local.toDomain
 import com.clarezafinanceira.app.domain.MonthlyAnalysis
 import com.clarezafinanceira.app.domain.MonthlyAnalysisEngine
+import com.clarezafinanceira.app.domain.MonthlyAnalysisSource
 import java.time.YearMonth
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
@@ -14,7 +15,7 @@ import kotlinx.coroutines.withContext
 class MonthlyAnalysisRepository(
     private val database: FinancialDatabase,
     private val engine: MonthlyAnalysisEngine = MonthlyAnalysisEngine(),
-) {
+) : MonthlyAnalysisSource {
     /** Read facts atomically, then calculate outside the Room transaction and UI thread. */
     suspend fun getMonthlyAnalysis(period: YearMonth): MonthlyAnalysis = withContext(Dispatchers.Default) {
         val snapshot = database.monthlyAnalysisDao().snapshot(period)
@@ -28,7 +29,7 @@ class MonthlyAnalysisRepository(
     }
 
     /** Cold flow: an initial snapshot followed by database invalidations, without polling. */
-    fun observeMonthlyAnalysis(period: YearMonth): Flow<MonthlyAnalysis> =
+    override fun observeMonthlyAnalysis(period: YearMonth): Flow<MonthlyAnalysis> =
         database.invalidationTracker.createFlow(
             "movements", "recurrences", "recurrence_versions", "recurrence_exceptions",
         ).map { getMonthlyAnalysis(period) }.distinctUntilChanged()

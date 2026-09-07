@@ -35,6 +35,8 @@ ksp {
 }
 
 dependencies {
+    implementation("androidx.lifecycle:lifecycle-viewmodel:2.9.4")
+    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.10.2")
     implementation("androidx.room:room-runtime:2.8.4")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.10.2")
     ksp("androidx.room:room-compiler:2.8.4")

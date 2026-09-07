@@ -1,0 +1,42 @@
+package com.clarezafinanceira.app.presentation
+
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.clarezafinanceira.app.domain.MonthlyAnalysisSource
+import java.time.Clock
+import java.time.YearMonth
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.stateIn
+
+@OptIn(ExperimentalCoroutinesApi::class)
+class MonthlyAnalysisViewModel(
+    private val source: MonthlyAnalysisSource,
+    clock: Clock,
+) : ViewModel() {
+    private val mutableSelectedPeriod = MutableStateFlow(YearMonth.now(clock))
+    val selectedPeriod: StateFlow<YearMonth> = mutableSelectedPeriod.asStateFlow()
+
+    val uiState: StateFlow<MonthlyAnalysisUiState> = selectedPeriod.flatMapLatest { period ->
+        flow<MonthlyAnalysisUiState> {
+            emit(MonthlyAnalysisUiState.Loading(period))
+            source.observeMonthlyAnalysis(period).collect { analysis ->
+                emit(MonthlyAnalysisUiState.Success(period, analysis))
+            }
+        }.catch { cause -> emit(MonthlyAnalysisUiState.Error(period, cause)) }
+    }.stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.Eagerly,
+        initialValue = MonthlyAnalysisUiState.Loading(selectedPeriod.value),
+    )
+
+    fun selectPeriod(period: YearMonth) {
+        mutableSelectedPeriod.value = period
+    }
+}
