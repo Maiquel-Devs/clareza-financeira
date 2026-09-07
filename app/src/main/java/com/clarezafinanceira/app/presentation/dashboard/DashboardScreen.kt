@@ -45,15 +45,15 @@ import com.clarezafinanceira.app.presentation.MonthlyAnalysisViewModel
 
 @Composable
 fun DashboardRoute(viewModel: MonthlyAnalysisViewModel, onAdd: (() -> Unit)? = null,
-    onEdit: ((String) -> Unit)? = null) {
+    onEdit: ((String) -> Unit)? = null, onEditRecurrence: ((String, java.time.YearMonth) -> Unit)? = null) {
     val state by viewModel.uiState.collectAsStateWithLifecycle()
-    DashboardScreen(state, onAdd = onAdd, onEdit = onEdit)
+    DashboardScreen(state, onAdd = onAdd, onEdit = onEdit, onEditRecurrence = onEditRecurrence)
 }
 
 /** Stateless UI: only domain analysis and explicit loading/error states enter this screen. */
 @Composable
 fun DashboardScreen(state: MonthlyAnalysisUiState, modifier: Modifier = Modifier,
-    onAdd: (() -> Unit)? = null, onEdit: ((String) -> Unit)? = null) {
+    onAdd: (() -> Unit)? = null, onEdit: ((String) -> Unit)? = null, onEditRecurrence: ((String, java.time.YearMonth) -> Unit)? = null) {
     Surface(modifier = modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
         Box(Modifier.safeDrawingPadding(), contentAlignment = Alignment.TopCenter) {
             // A new period starts at the top; its title and content always use the same state.
@@ -109,11 +109,11 @@ fun DashboardScreen(state: MonthlyAnalysisUiState, modifier: Modifier = Modifier
                                 }
                             } else {
                                 analysisContent(state.analysis)
-                                if (onEdit != null) {
-                                    item { Text("Editar movimentações pontuais", style = MaterialTheme.typography.titleMedium) }
+                                if (onEdit != null || onEditRecurrence != null) {
+                                    item { Text("Editar movimentações", style = MaterialTheme.typography.titleMedium) }
                                     items((state.analysis.incomeSources + state.analysis.expenseItems)
-                                        .filter { it.origin == ItemOrigin.MOVEMENT }, key = { "edit-${it.sourceId}" }) { entry ->
-                                        androidx.compose.material3.TextButton(onClick = { onEdit(entry.sourceId) },
+                                        .filter { if (it.origin == ItemOrigin.MOVEMENT) onEdit != null else onEditRecurrence != null }, key = { "edit-${it.origin}-${it.sourceId}" }) { entry ->
+                                        androidx.compose.material3.TextButton(onClick = { if (entry.origin == ItemOrigin.MOVEMENT) onEdit?.invoke(entry.sourceId) else onEditRecurrence?.invoke(entry.sourceId, state.period) },
                                             modifier = Modifier.fillMaxWidth()) {
                                             Text("Editar ${entry.name} · ${DashboardFormatting.money(entry.amountCents)}")
                                         }

@@ -4,12 +4,17 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Transaction
+import androidx.room.Upsert
 import kotlinx.coroutines.flow.Flow
 import java.time.Instant
 import java.time.YearMonth
 
 @Dao
 abstract class RecurrenceDao {
+    @Upsert abstract suspend fun putVersion(value: RecurrenceVersionEntity)
+    @Upsert abstract suspend fun putException(value: RecurrenceExceptionEntity)
+    @Query("DELETE FROM recurrence_exceptions WHERE recurrenceId = :id AND period = :period")
+    abstract suspend fun removeException(id: String, period: YearMonth)
     @Insert protected abstract suspend fun insertRecurrence(value: RecurrenceEntity)
     @Insert protected abstract suspend fun insertVersion(value: RecurrenceVersionEntity)
     @Insert protected abstract suspend fun insertException(value: RecurrenceExceptionEntity)
@@ -36,7 +41,7 @@ abstract class RecurrenceDao {
         insertVersion(firstVersion)
     }
 
-    // There is intentionally no update/delete operation for a historical version.
+    // Inserts a new milestone; scoped edits preserve its ID through putVersion.
     @Transaction
     open suspend fun addVersion(version: RecurrenceVersionEntity) {
         val recurrence = requireNotNull(findById(version.recurrenceId))

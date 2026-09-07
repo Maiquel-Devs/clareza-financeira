@@ -21,7 +21,7 @@ data class EntryInput(
     }
 }
 
-/** Writing boundary; recurrence scope changes deliberately have no operation yet. */
+/** Creation and one-off editing; existing recurrence intents belong to RecurrenceStore. */
 interface FinancialEntryStore {
     suspend fun findMovement(id: String): Movement?
     suspend fun save(input: EntryInput, movementId: String? = null)

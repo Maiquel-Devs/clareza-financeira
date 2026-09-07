@@ -19,13 +19,23 @@ fun EntryNavigation(container: AppContainer, analysis: MonthlyAnalysisViewModel)
         composable("dashboard") {
             DashboardRoute(analysis,
                 onAdd = { navigation.navigate("movement/new") { launchSingleTop = true } },
-                onEdit = { navigation.navigate("movement/edit/${Uri.encode(it)}") { launchSingleTop = true } })
+                onEdit = { navigation.navigate("movement/edit/${Uri.encode(it)}") { launchSingleTop = true } },
+                onEditRecurrence = { id, period -> navigation.navigate("recurrence/${Uri.encode(id)}/$period") { launchSingleTop = true } })
         }
         composable("movement/new") {
             val form: EntryViewModel = viewModel(factory = viewModelFactory {
                 initializer { EntryViewModel(container.financialEntryRepository, container.clock) }
             })
             EntryRoute(form) { navigation.popBackStack() }
+        }
+        composable("recurrence/{id}/{period}", arguments = listOf(
+            navArgument("id") { type = NavType.StringType }, navArgument("period") { type = NavType.StringType })) { entry ->
+            val form: RecurrenceViewModel = viewModel(factory = viewModelFactory {
+                initializer { RecurrenceViewModel(container.financialEntryRepository,
+                    requireNotNull(entry.arguments?.getString("id")),
+                    java.time.YearMonth.parse(requireNotNull(entry.arguments?.getString("period")))) }
+            })
+            RecurrenceRoute(form) { navigation.popBackStack() }
         }
         composable("movement/edit/{id}", arguments = listOf(navArgument("id") { type = NavType.StringType })) { entry ->
             val form: EntryViewModel = viewModel(factory = viewModelFactory {

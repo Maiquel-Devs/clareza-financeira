@@ -31,7 +31,9 @@ fun EntryRoute(viewModel: EntryViewModel, onBack: () -> Unit) {
 
 @Composable
 fun EntryScreen(state: EntryState, onChange: ((EntryState) -> EntryState) -> Unit,
-    onSave: () -> Unit, onBack: () -> Unit) {
+    onSave: () -> Unit, onBack: () -> Unit,
+    recurrencePeriod: java.time.YearMonth? = null,
+    onStop: () -> Unit = {}, onDelete: () -> Unit = {}) {
     val context = LocalContext.current
     var choosingCategory by remember { mutableStateOf(false) }
     val enabled = !state.saving && !state.loading && !state.loadFailed && !state.saved
@@ -43,7 +45,8 @@ fun EntryScreen(state: EntryState, onChange: ((EntryState) -> EntryState) -> Uni
             .verticalScroll(rememberScrollState()).padding(horizontal = 20.dp, vertical = 12.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp)) {
             TextButton(onClick = onBack, enabled = !state.saving) { Text("Voltar") }
-            Text(title, style = MaterialTheme.typography.headlineMedium)
+            Text(title + if (recurrencePeriod != null) " mensal" else "", style = MaterialTheme.typography.headlineMedium)
+            recurrencePeriod?.let { Text("Período: ${it.portuguesePeriod()}") }
             if (state.loading) CircularProgressIndicator()
             if (!state.editing) Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
                 FilterChip(selected = !income, enabled = enabled,
@@ -77,7 +80,7 @@ fun EntryScreen(state: EntryState, onChange: ((EntryState) -> EntryState) -> Uni
                 Switch(checked = state.monthly, enabled = enabled, onCheckedChange = null)
             }
             if (state.monthly) {
-                EntryField(state.startMonth, "Mês de início (MM/AAAA)", state.errors["month"], enabled,
+                if (recurrencePeriod == null) EntryField(state.startMonth, "Mês de início (MM/AAAA)", state.errors["month"], enabled,
                     KeyboardType.Number) { value ->
                         val digits = value.filter { it in '0'..'9' }.take(6)
                         val month = if (digits.length > 2) digits.take(2) + "/" + digits.drop(2) else digits
@@ -85,7 +88,8 @@ fun EntryScreen(state: EntryState, onChange: ((EntryState) -> EntryState) -> Uni
                     }
                 EntryField(state.habitualDay, "Dia habitual (1 a 31)", state.errors["day"], enabled,
                     KeyboardType.Number) { value -> onChange { it.copy(habitualDay = value) } }
-                Text("Esse valor será considerado a cada mês. O dia é apenas quando costuma acontecer.",
+                Text(if (recurrencePeriod == null) "Esse valor será considerado a cada mês. O dia é apenas quando costuma acontecer."
+                    else "Ao salvar, você poderá escolher em quais períodos aplicar a alteração. O dia é apenas quando costuma acontecer.",
                     style = MaterialTheme.typography.bodyMedium)
             } else {
                 Column {
@@ -102,7 +106,12 @@ fun EntryScreen(state: EntryState, onChange: ((EntryState) -> EntryState) -> Uni
             state.error?.let { Text(it, color = MaterialTheme.colorScheme.error) }
             Button(onClick = onSave, enabled = enabled,
                 modifier = Modifier.fillMaxWidth().heightIn(min = 52.dp)) {
-                Text(if (state.saving) "Salvando…" else "Salvar")
+                Text(if (state.saving) "Salvando…" else if (recurrencePeriod != null) "Salvar alteração" else "Salvar")
+            }
+            if (recurrencePeriod != null) {
+                OutlinedButton(onClick = onStop, enabled = enabled, modifier = Modifier.fillMaxWidth()) { Text("Parar recorrência") }
+                TextButton(onClick = onDelete, enabled = enabled, modifier = Modifier.fillMaxWidth(),
+                    colors = ButtonDefaults.textButtonColors(contentColor = MaterialTheme.colorScheme.error)) { Text("Excluir recorrência") }
             }
             Spacer(Modifier.height(12.dp))
         }
