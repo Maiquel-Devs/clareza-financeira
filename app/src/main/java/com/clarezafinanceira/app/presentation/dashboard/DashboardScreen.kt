@@ -31,6 +31,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.clearAndSetSemantics
 import androidx.compose.ui.semantics.heading
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
@@ -45,15 +46,15 @@ import com.clarezafinanceira.app.presentation.MonthlyAnalysisViewModel
 
 @Composable
 fun DashboardRoute(viewModel: MonthlyAnalysisViewModel, onAdd: (() -> Unit)? = null,
-    onEdit: ((String) -> Unit)? = null, onEditRecurrence: ((String, java.time.YearMonth) -> Unit)? = null, onHistory: (() -> Unit)? = null, onBack: (() -> Unit)? = null) {
+    onCategory: ((ExpenseCategory, java.time.YearMonth) -> Unit)? = null, onItem: ((com.clarezafinanceira.app.domain.FinancialItemReference) -> Unit)? = null, onHistory: (() -> Unit)? = null, onBack: (() -> Unit)? = null) {
     val state by viewModel.uiState.collectAsStateWithLifecycle()
-    DashboardScreen(state, onAdd = onAdd, onEdit = onEdit, onEditRecurrence = onEditRecurrence, onHistory = onHistory, onBack = onBack)
+    DashboardScreen(state, onAdd = onAdd, onCategory = onCategory, onItem = onItem, onHistory = onHistory, onBack = onBack)
 }
 
 /** Stateless UI: only domain analysis and explicit loading/error states enter this screen. */
 @Composable
 fun DashboardScreen(state: MonthlyAnalysisUiState, modifier: Modifier = Modifier,
-    onAdd: (() -> Unit)? = null, onEdit: ((String) -> Unit)? = null, onEditRecurrence: ((String, java.time.YearMonth) -> Unit)? = null, onHistory: (() -> Unit)? = null, onBack: (() -> Unit)? = null) {
+    onAdd: (() -> Unit)? = null, onCategory: ((ExpenseCategory, java.time.YearMonth) -> Unit)? = null, onItem: ((com.clarezafinanceira.app.domain.FinancialItemReference) -> Unit)? = null, onHistory: (() -> Unit)? = null, onBack: (() -> Unit)? = null) {
     Surface(modifier = modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
         Box(Modifier.safeDrawingPadding(), contentAlignment = Alignment.TopCenter) {
             // A new period starts at the top; its title and content always use the same state.
@@ -110,17 +111,7 @@ fun DashboardScreen(state: MonthlyAnalysisUiState, modifier: Modifier = Modifier
                                     )
                                 }
                             } else {
-                                analysisContent(state.analysis)
-                                if (onEdit != null || onEditRecurrence != null) {
-                                    item { Text("Editar movimentações", style = MaterialTheme.typography.titleMedium) }
-                                    items((state.analysis.incomeSources + state.analysis.expenseItems)
-                                        .filter { if (it.origin == ItemOrigin.MOVEMENT) onEdit != null else onEditRecurrence != null }, key = { "edit-${it.origin}-${it.sourceId}" }) { entry ->
-                                        androidx.compose.material3.TextButton(onClick = { if (entry.origin == ItemOrigin.MOVEMENT) onEdit?.invoke(entry.sourceId) else onEditRecurrence?.invoke(entry.sourceId, state.period) },
-                                            modifier = Modifier.fillMaxWidth()) {
-                                            Text("Editar ${entry.name} · ${DashboardFormatting.money(entry.amountCents)}")
-                                        }
-                                    }
-                                }
+                                analysisContent(state.analysis, onCategory, onItem)
                             }
                         }
                     }
@@ -134,7 +125,7 @@ fun DashboardScreen(state: MonthlyAnalysisUiState, modifier: Modifier = Modifier
     }
 }
 
-private fun LazyListScope.analysisContent(analysis: MonthlyAnalysis) {
+private fun LazyListScope.analysisContent(analysis: MonthlyAnalysis, onCategory: ((ExpenseCategory, java.time.YearMonth) -> Unit)?, onItem: ((com.clarezafinanceira.app.domain.FinancialItemReference) -> Unit)?) {
     item(key = "summary") { Summary(analysis) }
     item(key = "interpretation") {
         Column(Modifier.padding(vertical = 8.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
@@ -176,6 +167,7 @@ private fun LazyListScope.analysisContent(analysis: MonthlyAnalysis) {
             ),
             amountCents = source.amountCents,
             amountColor = IncomeInk,
+            onClick = onItem?.let { open -> { open(com.clarezafinanceira.app.domain.FinancialItemReference(source.origin, source.sourceId, analysis.period)) } },
         )
     }
     item(key = "expense-title") {
@@ -192,6 +184,7 @@ private fun LazyListScope.analysisContent(analysis: MonthlyAnalysis) {
             title = stringResource(category.labelResource()),
             detail = pluralStringResource(R.plurals.dashboard_expense_count, count, count),
             amountCents = analysis.expensesByCategory.getValue(category),
+            onClick = onCategory?.let { open -> { open(category, analysis.period) } },
         )
     }
 }
@@ -265,20 +258,25 @@ private fun SectionTitle(@StringRes title: Int, @StringRes description: Int) {
 }
 
 @Composable
-private fun DetailCard(
+internal fun DetailCard(
     title: String,
     detail: String,
     amountCents: Long,
     amountColor: Color = MaterialTheme.colorScheme.onSurface,
+    onClick: (() -> Unit)? = null,
 ) {
     Surface(
+        onClick = { onClick?.invoke() }, enabled = onClick != null,
         modifier = Modifier.fillMaxWidth().semantics(mergeDescendants = true) {},
         shape = RoundedCornerShape(16.dp),
         border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant),
     ) {
         // Vertical flow leaves room for long names, large amounts and Android font scaling.
         Column(Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(4.dp)) {
-            Text(title, style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.SemiBold)
+            Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
+                Text(title, modifier = Modifier.weight(1f), style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.SemiBold)
+                if (onClick != null) Text("›", modifier = Modifier.padding(start = 12.dp).clearAndSetSemantics {}, color = MaterialTheme.colorScheme.primary)
+            }
             Text(detail, style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
             Text(DashboardFormatting.money(amountCents), Modifier.padding(top = 4.dp),
                 style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold, color = amountColor)
@@ -309,7 +307,7 @@ private fun MessageCard(
 }
 
 @StringRes
-private fun ExpenseCategory.labelResource(): Int = when (this) {
+internal fun ExpenseCategory.labelResource(): Int = when (this) {
     ExpenseCategory.FOOD -> R.string.category_food
     ExpenseCategory.HOUSING -> R.string.category_housing
     ExpenseCategory.TRANSPORT -> R.string.category_transport

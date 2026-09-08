@@ -19,6 +19,9 @@ object DashboardFormatting {
     fun period(period: YearMonth): String = period.format(monthFormatter)
         .replaceFirstChar { it.titlecase(locale) }
 
+    fun date(date: java.time.LocalDate): String = date.format(
+        DateTimeFormatter.ofPattern("d 'de' MMMM 'de' uuuu", locale))
+
     fun percentage(value: BigDecimal): String = NumberFormat.getNumberInstance(locale).apply {
         maximumFractionDigits = 1
         roundingMode = RoundingMode.HALF_UP

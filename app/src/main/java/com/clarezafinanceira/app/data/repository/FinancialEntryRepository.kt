@@ -15,7 +15,11 @@ class FinancialEntryRepository(
     private val database: FinancialDatabase,
     private val clock: Clock,
     private val newId: () -> String = { UUID.randomUUID().toString() },
-) : FinancialEntryStore, RecurrenceStore {
+) : FinancialEntryStore, RecurrenceStore, com.clarezafinanceira.app.domain.MovementDeletionStore {
+    override suspend fun deleteMovement(id: String) {
+        database.movementDao().deleteById(id)
+    }
+
     override suspend fun findRecurrence(id: String, period: YearMonth) = database.withTransaction {
         val dao = database.recurrenceDao()
         val parent = dao.findById(id) ?: return@withTransaction null

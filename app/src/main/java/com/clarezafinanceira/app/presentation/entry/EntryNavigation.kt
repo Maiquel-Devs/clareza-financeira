@@ -1,6 +1,8 @@
 package com.clarezafinanceira.app.presentation.entry
 
 import android.net.Uri
+import com.clarezafinanceira.app.domain.*
+import com.clarezafinanceira.app.presentation.detail.*
 import androidx.lifecycle.createSavedStateHandle
 import com.clarezafinanceira.app.presentation.history.*
 import com.clarezafinanceira.app.data.repository.HistoryRepository
@@ -19,13 +21,18 @@ import com.clarezafinanceira.app.presentation.dashboard.DashboardRoute
 @Composable
 fun EntryNavigation(container: AppContainer, analysis: MonthlyAnalysisViewModel) {
     val navigation = rememberNavController()
+    val openItem: (FinancialItemReference) -> Unit = { reference ->
+        navigation.navigate("detail/${reference.origin}/${Uri.encode(reference.sourceId)}/${reference.period}") { launchSingleTop = true }
+    }
+    val openCategory: (ExpenseCategory, YearMonth) -> Unit = { category, period ->
+        navigation.navigate("category/$category/$period") { launchSingleTop = true }
+    }
     NavHost(navigation, startDestination = "dashboard") {
         composable("dashboard") {
             DashboardRoute(analysis,
                 onHistory = { navigation.navigate("history") { launchSingleTop = true } },
                 onAdd = { navigation.navigate("movement/new") { launchSingleTop = true } },
-                onEdit = { navigation.navigate("movement/edit/${Uri.encode(it)}") { launchSingleTop = true } },
-                onEditRecurrence = { id, period -> navigation.navigate("recurrence/${Uri.encode(id)}/$period") { launchSingleTop = true } })
+                onCategory = openCategory, onItem = openItem)
         }
         composable("history") {
             val history: HistoryViewModel = viewModel(factory = viewModelFactory {
@@ -43,8 +50,31 @@ fun EntryNavigation(container: AppContainer, analysis: MonthlyAnalysisViewModel)
                 } }
             })
             DashboardRoute(historical, onBack = { navigation.popBackStack() },
-                onEdit = { navigation.navigate("movement/edit/${Uri.encode(it)}") },
-                onEditRecurrence = { id, period -> navigation.navigate("recurrence/${Uri.encode(id)}/$period") })
+                onCategory = openCategory, onItem = openItem)
+        }
+        composable("category/{category}/{period}", arguments = listOf(
+            navArgument("category") { type = NavType.StringType }, navArgument("period") { type = NavType.StringType })) { entry ->
+            val category: CategoryViewModel = viewModel(factory = viewModelFactory {
+                initializer { CategoryViewModel(container.financialDetailRepository,
+                    YearMonth.parse(requireNotNull(entry.arguments?.getString("period"))),
+                    ExpenseCategory.valueOf(requireNotNull(entry.arguments?.getString("category")))) }
+            })
+            CategoryRoute(category, onBack = { navigation.popBackStack() }, onItem = openItem)
+        }
+        composable("detail/{origin}/{id}/{period}", arguments = listOf(
+            navArgument("origin") { type = NavType.StringType }, navArgument("id") { type = NavType.StringType },
+            navArgument("period") { type = NavType.StringType })) { entry ->
+            val detail: FinancialDetailViewModel = viewModel(factory = viewModelFactory {
+                initializer { FinancialDetailViewModel(container.financialDetailRepository, container.financialEntryRepository,
+                    FinancialItemReference(ItemOrigin.valueOf(requireNotNull(entry.arguments?.getString("origin"))),
+                        requireNotNull(entry.arguments?.getString("id")),
+                        YearMonth.parse(requireNotNull(entry.arguments?.getString("period"))))) }
+            })
+            FinancialDetailRoute(detail, onBack = { navigation.popBackStack() }, onEdit = { reference ->
+                val route = if (reference.origin == ItemOrigin.MOVEMENT) "movement/edit/${Uri.encode(reference.sourceId)}"
+                    else "recurrence/${Uri.encode(reference.sourceId)}/${reference.period}"
+                navigation.navigate(route) { launchSingleTop = true }
+            })
         }
         composable("movement/new") {
             val form: EntryViewModel = viewModel(factory = viewModelFactory {
