@@ -5,6 +5,9 @@ import androidx.compose.foundation.lazy.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.ui.draw.clipToBounds
+import com.clarezafinanceira.app.presentation.charts.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
@@ -23,6 +26,8 @@ fun HistoryRoute(viewModel: HistoryViewModel, onBack: () -> Unit, onPeriod: (Yea
 @Composable
 fun HistoryScreen(state: HistoryUiState, onYear: (Int) -> Unit, onBack: () -> Unit,
     onPeriod: (YearMonth) -> Unit) {
+    var chartExpanded by rememberSaveable { mutableStateOf(false) }
+    val chartRows = if (chartExpanded) remember(state.items) { ChartData.year(state.items) } else emptyList()
     Surface(color = MaterialTheme.colorScheme.background, modifier = Modifier.fillMaxSize()) {
         Column(Modifier.safeDrawingPadding().widthIn(max = 600.dp).padding(horizontal = 20.dp)) {
             TextButton(onClick = onBack) { Text("← Voltar") }
@@ -39,9 +44,11 @@ fun HistoryScreen(state: HistoryUiState, onYear: (Int) -> Unit, onBack: () -> Un
             // NavHost saves this saveable LazyListState on forward navigation. A new year starts at top.
             key(state.year) {
                 val scroll = rememberLazyListState()
-                LazyColumn(state = scroll, modifier = Modifier.testTag("history-months"),
+                LazyColumn(state = scroll, modifier = Modifier.weight(1f).clipToBounds().testTag("history-months"),
                     contentPadding = PaddingValues(bottom = 24.dp),
                     verticalArrangement = Arrangement.spacedBy(12.dp)) {
+                    if (!state.loading && !state.failed && state.items.isNotEmpty())
+                        yearChart(chartRows, chartExpanded, { chartExpanded = !chartExpanded }, state.year)
                     when {
                         state.loading -> item { CircularProgressIndicator() }
                         state.failed -> item { Text("Não foi possível carregar o histórico.") }

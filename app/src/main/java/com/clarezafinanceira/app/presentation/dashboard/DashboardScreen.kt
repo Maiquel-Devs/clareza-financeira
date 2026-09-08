@@ -22,6 +22,11 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
+import androidx.compose.runtime.saveable.rememberSaveable
+import com.clarezafinanceira.app.presentation.charts.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.key
@@ -55,6 +60,9 @@ fun DashboardRoute(viewModel: MonthlyAnalysisViewModel, onAdd: (() -> Unit)? = n
 @Composable
 fun DashboardScreen(state: MonthlyAnalysisUiState, modifier: Modifier = Modifier,
     onAdd: (() -> Unit)? = null, onCategory: ((ExpenseCategory, java.time.YearMonth) -> Unit)? = null, onItem: ((com.clarezafinanceira.app.domain.FinancialItemReference) -> Unit)? = null, onHistory: (() -> Unit)? = null, onBack: (() -> Unit)? = null) {
+    var chartExpanded by rememberSaveable(state.period) { mutableStateOf(false) }
+    val chartRows = if (state is MonthlyAnalysisUiState.Success && chartExpanded)
+        remember(state.analysis.expensesByCategory) { ChartData.expenses(state.analysis.expensesByCategory) } else emptyList()
     Surface(modifier = modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
         Box(Modifier.safeDrawingPadding(), contentAlignment = Alignment.TopCenter) {
             // A new period starts at the top; its title and content always use the same state.
@@ -111,7 +119,7 @@ fun DashboardScreen(state: MonthlyAnalysisUiState, modifier: Modifier = Modifier
                                     )
                                 }
                             } else {
-                                analysisContent(state.analysis, onCategory, onItem)
+                                analysisContent(state.analysis, onCategory, onItem, chartRows, chartExpanded) { chartExpanded = !chartExpanded }
                             }
                         }
                     }
@@ -125,7 +133,7 @@ fun DashboardScreen(state: MonthlyAnalysisUiState, modifier: Modifier = Modifier
     }
 }
 
-private fun LazyListScope.analysisContent(analysis: MonthlyAnalysis, onCategory: ((ExpenseCategory, java.time.YearMonth) -> Unit)?, onItem: ((com.clarezafinanceira.app.domain.FinancialItemReference) -> Unit)?) {
+private fun LazyListScope.analysisContent(analysis: MonthlyAnalysis, onCategory: ((ExpenseCategory, java.time.YearMonth) -> Unit)?, onItem: ((com.clarezafinanceira.app.domain.FinancialItemReference) -> Unit)?, chartRows: List<ExpenseBar>, chartExpanded: Boolean, onChartToggle: () -> Unit) {
     item(key = "summary") { Summary(analysis) }
     item(key = "interpretation") {
         Column(Modifier.padding(vertical = 8.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
@@ -173,6 +181,7 @@ private fun LazyListScope.analysisContent(analysis: MonthlyAnalysis, onCategory:
     item(key = "expense-title") {
         SectionTitle(R.string.dashboard_expense_section, R.string.dashboard_expense_description)
     }
+    if (analysis.forecastExpenseCents > 0) expenseChart(chartRows, chartExpanded, onChartToggle, analysis.period)
     val categories = ExpenseCategory.entries.filter { (analysis.expensesByCategory[it] ?: 0L) > 0L }
     if (categories.isEmpty()) {
         item(key = "no-expenses") { Text(stringResource(R.string.dashboard_no_expenses)) }

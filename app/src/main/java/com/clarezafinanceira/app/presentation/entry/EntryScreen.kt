@@ -86,6 +86,10 @@ fun EntryScreen(state: EntryState, onChange: ((EntryState) -> EntryState) -> Uni
                         val month = if (digits.length > 2) digits.take(2) + "/" + digits.drop(2) else digits
                         onChange { it.copy(startMonth = month) }
                     }
+                if (recurrencePeriod == null) EntryViewModel.parseMonth(state.startMonth)?.let {
+                    Text(com.clarezafinanceira.app.presentation.dashboard.DashboardFormatting.period(it),
+                        style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.primary)
+                }
                 EntryField(state.habitualDay, "Dia habitual (1 a 31)", state.errors["day"], enabled,
                     KeyboardType.Number) { value -> onChange { it.copy(habitualDay = value) } }
                 Text(if (recurrencePeriod == null) "Esse valor será considerado a cada mês. O dia é apenas quando costuma acontecer."

@@ -1,6 +1,9 @@
 package com.clarezafinanceira.app.presentation.entry
 
 import android.net.Uri
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.core.tween
 import com.clarezafinanceira.app.domain.*
 import com.clarezafinanceira.app.presentation.detail.*
 import androidx.lifecycle.createSavedStateHandle
@@ -27,7 +30,9 @@ fun EntryNavigation(container: AppContainer, analysis: MonthlyAnalysisViewModel)
     val openCategory: (ExpenseCategory, YearMonth) -> Unit = { category, period ->
         navigation.navigate("category/$category/$period") { launchSingleTop = true }
     }
-    NavHost(navigation, startDestination = "dashboard") {
+    NavHost(navigation, startDestination = "dashboard",
+        enterTransition = { fadeIn(tween(100)) }, exitTransition = { fadeOut(tween(70)) },
+        popEnterTransition = { fadeIn(tween(100)) }, popExitTransition = { fadeOut(tween(70)) }) {
         composable("dashboard") {
             DashboardRoute(analysis,
                 onHistory = { navigation.navigate("history") { launchSingleTop = true } },
