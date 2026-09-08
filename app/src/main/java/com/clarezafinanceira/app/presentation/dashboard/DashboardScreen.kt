@@ -45,15 +45,15 @@ import com.clarezafinanceira.app.presentation.MonthlyAnalysisViewModel
 
 @Composable
 fun DashboardRoute(viewModel: MonthlyAnalysisViewModel, onAdd: (() -> Unit)? = null,
-    onEdit: ((String) -> Unit)? = null, onEditRecurrence: ((String, java.time.YearMonth) -> Unit)? = null) {
+    onEdit: ((String) -> Unit)? = null, onEditRecurrence: ((String, java.time.YearMonth) -> Unit)? = null, onHistory: (() -> Unit)? = null, onBack: (() -> Unit)? = null) {
     val state by viewModel.uiState.collectAsStateWithLifecycle()
-    DashboardScreen(state, onAdd = onAdd, onEdit = onEdit, onEditRecurrence = onEditRecurrence)
+    DashboardScreen(state, onAdd = onAdd, onEdit = onEdit, onEditRecurrence = onEditRecurrence, onHistory = onHistory, onBack = onBack)
 }
 
 /** Stateless UI: only domain analysis and explicit loading/error states enter this screen. */
 @Composable
 fun DashboardScreen(state: MonthlyAnalysisUiState, modifier: Modifier = Modifier,
-    onAdd: (() -> Unit)? = null, onEdit: ((String) -> Unit)? = null, onEditRecurrence: ((String, java.time.YearMonth) -> Unit)? = null) {
+    onAdd: (() -> Unit)? = null, onEdit: ((String) -> Unit)? = null, onEditRecurrence: ((String, java.time.YearMonth) -> Unit)? = null, onHistory: (() -> Unit)? = null, onBack: (() -> Unit)? = null) {
     Surface(modifier = modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
         Box(Modifier.safeDrawingPadding(), contentAlignment = Alignment.TopCenter) {
             // A new period starts at the top; its title and content always use the same state.
@@ -65,6 +65,7 @@ fun DashboardScreen(state: MonthlyAnalysisUiState, modifier: Modifier = Modifier
                 ) {
                     item(key = "header") {
                         Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                            if (onBack != null) androidx.compose.material3.TextButton(onClick = onBack) { Text("← Voltar") }
                             Text(stringResource(R.string.app_name),
                                 style = MaterialTheme.typography.labelLarge,
                                 color = MaterialTheme.colorScheme.primary)
@@ -74,6 +75,7 @@ fun DashboardScreen(state: MonthlyAnalysisUiState, modifier: Modifier = Modifier
                                 fontWeight = FontWeight.Bold,
                                 modifier = Modifier.semantics { heading() },
                             )
+                            if (onBack == null && onHistory != null) androidx.compose.material3.TextButton(onClick = onHistory) { Text("Histórico") }
                             Text(stringResource(R.string.dashboard_subtitle),
                                 style = MaterialTheme.typography.bodyMedium,
                                 color = MaterialTheme.colorScheme.onSurfaceVariant,
@@ -124,7 +126,7 @@ fun DashboardScreen(state: MonthlyAnalysisUiState, modifier: Modifier = Modifier
                     }
                 }
             }
-            if (onAdd != null) androidx.compose.material3.ExtendedFloatingActionButton(
+            if (onAdd != null && onBack == null) androidx.compose.material3.ExtendedFloatingActionButton(
                 onClick = onAdd,
                 modifier = Modifier.align(Alignment.BottomEnd).padding(20.dp),
             ) { Text("+ Adicionar") }
