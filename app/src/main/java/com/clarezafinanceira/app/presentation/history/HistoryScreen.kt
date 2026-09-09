@@ -10,12 +10,15 @@ import androidx.compose.ui.draw.clipToBounds
 import com.clarezafinanceira.app.presentation.charts.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.semantics.*
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.clarezafinanceira.app.presentation.dashboard.DashboardFormatting
 import java.time.YearMonth
+import java.time.format.TextStyle
+import java.util.Locale
 
 @Composable
 fun HistoryRoute(viewModel: HistoryViewModel, onBack: () -> Unit, onPeriod: (YearMonth) -> Unit) {
@@ -30,7 +33,7 @@ fun HistoryScreen(state: HistoryUiState, onYear: (Int) -> Unit, onBack: () -> Un
     val chartRows = if (chartExpanded) remember(state.items) { ChartData.year(state.items) } else emptyList()
     Surface(color = MaterialTheme.colorScheme.background, modifier = Modifier.fillMaxSize()) {
         Column(Modifier.safeDrawingPadding().widthIn(max = 600.dp).padding(horizontal = 20.dp)) {
-            TextButton(onClick = onBack) { Text("← Voltar") }
+            TextButton(onClick = onBack) { Text("Voltar") }
             Text("Histórico", style = MaterialTheme.typography.headlineMedium,
                 modifier = Modifier.semantics { heading() })
             Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically,
@@ -57,9 +60,14 @@ fun HistoryScreen(state: HistoryUiState, onYear: (Int) -> Unit, onBack: () -> Un
                             Surface(onClick = { onPeriod(month.period) }, shape = RoundedCornerShape(20.dp),
                                 color = MaterialTheme.colorScheme.surface, modifier = Modifier.fillMaxWidth()) {
                                 Column(Modifier.padding(20.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                                    Text(DashboardFormatting.period(month.period), style = MaterialTheme.typography.titleLarge)
-                                    if (month.isCurrentPeriod) Text("ATUAL", color = MaterialTheme.colorScheme.primary,
-                                        style = MaterialTheme.typography.labelSmall)
+                                    Column(Modifier.padding(bottom = 4.dp), verticalArrangement = Arrangement.spacedBy(4.dp)) {
+                                        val locale = Locale.forLanguageTag("pt-BR")
+                                        Text(month.period.month.getDisplayName(TextStyle.FULL, locale)
+                                            .replaceFirstChar { it.titlecase(locale) },
+                                            style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.SemiBold)
+                                        if (month.isCurrentPeriod) Text("ATUAL", color = MaterialTheme.colorScheme.primary,
+                                            style = MaterialTheme.typography.labelSmall)
+                                    }
                                     Text("Renda", style = MaterialTheme.typography.labelLarge)
                                     Text(if (month.incomeCents == 0L) "Nenhuma renda informada" else DashboardFormatting.money(month.incomeCents))
                                     Text("Previsão de despesas", style = MaterialTheme.typography.labelLarge)

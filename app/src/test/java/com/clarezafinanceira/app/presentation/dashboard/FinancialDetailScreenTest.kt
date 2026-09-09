@@ -80,7 +80,7 @@ class FinancialDetailScreenTest {
     @Test fun unavailableItemShowsBackAndNoEdit() {
         show(null)
         compose.onNodeWithText("Esta movimentação não está disponível neste período.").assertIsDisplayed()
-        compose.onNodeWithText("← Voltar").assertIsDisplayed()
+        compose.onNodeWithText("Voltar").assertIsDisplayed()
         compose.onNodeWithText("Editar").assertDoesNotExist()
     }
     private fun category(count: Int) {

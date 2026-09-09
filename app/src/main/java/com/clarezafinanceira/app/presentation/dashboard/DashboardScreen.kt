@@ -22,6 +22,7 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -40,6 +41,8 @@ import androidx.compose.ui.semantics.clearAndSetSemantics
 import androidx.compose.ui.semantics.heading
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.rememberTextMeasurer
+import androidx.compose.ui.unit.Constraints
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.clarezafinanceira.app.R
@@ -74,7 +77,7 @@ fun DashboardScreen(state: MonthlyAnalysisUiState, modifier: Modifier = Modifier
                 ) {
                     item(key = "header") {
                         Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                            if (onBack != null) androidx.compose.material3.TextButton(onClick = onBack) { Text("← Voltar") }
+                            if (onBack != null) TextButton(onClick = onBack) { Text("Voltar") }
                             Text(stringResource(R.string.app_name),
                                 style = MaterialTheme.typography.labelLarge,
                                 color = MaterialTheme.colorScheme.primary)
@@ -84,7 +87,16 @@ fun DashboardScreen(state: MonthlyAnalysisUiState, modifier: Modifier = Modifier
                                 fontWeight = FontWeight.Bold,
                                 modifier = Modifier.semantics { heading() },
                             )
-                            if (onBack == null && onHistory != null) androidx.compose.material3.TextButton(onClick = onHistory) { Text("Histórico") }
+                            if (onBack == null && onHistory != null) TextButton(
+                                onClick = onHistory,
+                                contentPadding = PaddingValues(horizontal = 12.dp, vertical = 8.dp),
+                                colors = androidx.compose.material3.ButtonDefaults.textButtonColors(
+                                    containerColor = MaterialTheme.colorScheme.surface,
+                                ),
+                            ) {
+                                Text("Histórico")
+                                Text("›", Modifier.padding(start = 8.dp).clearAndSetSemantics {})
+                            }
                             Text(stringResource(R.string.dashboard_subtitle),
                                 style = MaterialTheme.typography.bodyMedium,
                                 color = MaterialTheme.colorScheme.onSurfaceVariant,
@@ -136,20 +148,20 @@ fun DashboardScreen(state: MonthlyAnalysisUiState, modifier: Modifier = Modifier
 private fun LazyListScope.analysisContent(analysis: MonthlyAnalysis, onCategory: ((ExpenseCategory, java.time.YearMonth) -> Unit)?, onItem: ((com.clarezafinanceira.app.domain.FinancialItemReference) -> Unit)?, chartRows: List<ExpenseBar>, chartExpanded: Boolean, onChartToggle: () -> Unit) {
     item(key = "summary") { Summary(analysis) }
     item(key = "interpretation") {
-        Column(Modifier.padding(vertical = 8.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
-            Text(stringResource(R.string.dashboard_forecast_explanation),
-                style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.onSurfaceVariant)
-            Surface(
-                color = MaterialTheme.colorScheme.primaryContainer,
-                contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
-                shape = RoundedCornerShape(16.dp),
-            ) {
+        Surface(
+            modifier = Modifier.padding(vertical = 8.dp),
+            color = MaterialTheme.colorScheme.primaryContainer,
+            contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
+            shape = RoundedCornerShape(16.dp),
+        ) {
+            Column(Modifier.fillMaxWidth().padding(16.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
+                Text(stringResource(R.string.dashboard_forecast_explanation),
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant)
                 Text(
                     text = analysis.expensePercentageOfIncome?.let {
                         stringResource(R.string.dashboard_percentage, DashboardFormatting.percentage(it))
                     } ?: stringResource(R.string.dashboard_no_income),
-                    modifier = Modifier.fillMaxWidth().padding(16.dp),
                     style = MaterialTheme.typography.bodyLarge,
                 )
             }
@@ -181,7 +193,6 @@ private fun LazyListScope.analysisContent(analysis: MonthlyAnalysis, onCategory:
     item(key = "expense-title") {
         SectionTitle(R.string.dashboard_expense_section, R.string.dashboard_expense_description)
     }
-    if (analysis.forecastExpenseCents > 0) expenseChart(chartRows, chartExpanded, onChartToggle, analysis.period)
     val categories = ExpenseCategory.entries.filter { (analysis.expensesByCategory[it] ?: 0L) > 0L }
     if (categories.isEmpty()) {
         item(key = "no-expenses") { Text(stringResource(R.string.dashboard_no_expenses)) }
@@ -196,24 +207,46 @@ private fun LazyListScope.analysisContent(analysis: MonthlyAnalysis, onCategory:
             onClick = onCategory?.let { open -> { open(category, analysis.period) } },
         )
     }
+    if (analysis.forecastExpenseCents > 0) expenseChart(chartRows, chartExpanded, onChartToggle, analysis.period)
 }
 
 @Composable
 private fun Summary(analysis: MonthlyAnalysis) {
     Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
         BoxWithConstraints {
-            val stacked = maxWidth < 340.dp || LocalDensity.current.fontScale > 1.2f
+            val density = LocalDensity.current
+            val measurer = rememberTextMeasurer()
+            val amountStyle = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight.Bold)
+            val amounts = listOf(analysis.consideredIncomeCents, analysis.registeredExpenseCents)
+                .map(DashboardFormatting::money)
+            val halfContentWidth = with(density) { ((maxWidth - 12.dp) / 2 - 36.dp).roundToPx() }
+            val stacked = maxWidth < 340.dp || density.fontScale > 1.2f || amounts.any {
+                measurer.measure(it, amountStyle, softWrap = false).size.width > halfContentWidth
+            }
+            val contentWidth = with(density) {
+                ((if (stacked) maxWidth else (maxWidth - 12.dp) / 2) - 36.dp).roundToPx().coerceAtLeast(1)
+            }
+            // Share text slots at the actual width/font scale, without shrinking or truncating text.
+            val constraints = Constraints(maxWidth = contentWidth)
+            val labelLines = listOf(R.string.dashboard_income, R.string.dashboard_registered).maxOf {
+                measurer.measure(stringResource(it), MaterialTheme.typography.bodyMedium, constraints = constraints).lineCount
+            }
+            val amountLines = amounts.maxOf {
+                measurer.measure(it, amountStyle, constraints = constraints).lineCount
+            }
             if (stacked) {
                 Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
-                    SummaryCard(R.string.dashboard_income, analysis.consideredIncomeCents, IncomeSurface)
-                    SummaryCard(R.string.dashboard_registered, analysis.registeredExpenseCents, RegisteredSurface)
+                    SummaryCard(R.string.dashboard_income, analysis.consideredIncomeCents, IncomeSurface,
+                        labelLines = labelLines, amountLines = amountLines)
+                    SummaryCard(R.string.dashboard_registered, analysis.registeredExpenseCents, RegisteredSurface,
+                        labelLines = labelLines, amountLines = amountLines)
                 }
             } else {
                 Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
                     SummaryCard(R.string.dashboard_income, analysis.consideredIncomeCents, IncomeSurface,
-                        Modifier.weight(1f))
+                        Modifier.weight(1f), labelLines = labelLines, amountLines = amountLines)
                     SummaryCard(R.string.dashboard_registered, analysis.registeredExpenseCents, RegisteredSurface,
-                        Modifier.weight(1f))
+                        Modifier.weight(1f), labelLines = labelLines, amountLines = amountLines)
                 }
             }
         }
@@ -238,6 +271,8 @@ private fun SummaryCard(
     background: Color,
     modifier: Modifier = Modifier,
     explanation: String? = null,
+    labelLines: Int = 1,
+    amountLines: Int = 1,
 ) {
     Surface(
         modifier = modifier.fillMaxWidth().semantics(mergeDescendants = true) {},
@@ -246,9 +281,9 @@ private fun SummaryCard(
         border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant),
     ) {
         Column(Modifier.padding(18.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
-            Text(stringResource(label), style = MaterialTheme.typography.bodyMedium)
+            Text(stringResource(label), style = MaterialTheme.typography.bodyMedium, minLines = labelLines)
             Text(amountCents?.let(DashboardFormatting::money) ?: stringResource(R.string.dashboard_unavailable),
-                style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.Bold)
+                style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.Bold, minLines = amountLines)
             explanation?.let { Text(it, style = MaterialTheme.typography.bodyMedium) }
         }
     }

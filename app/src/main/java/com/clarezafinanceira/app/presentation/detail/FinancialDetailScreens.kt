@@ -27,7 +27,7 @@ fun CategoryRoute(viewModel: CategoryViewModel, onBack: () -> Unit, onItem: (Fin
 fun CategoryScreen(state: CategoryUiState, onBack: () -> Unit, onItem: (FinancialItemReference) -> Unit) {
     DetailLayout("category-list") {
         item("header") {
-            TextButton(onClick = onBack) { Text("← Voltar") }
+            TextButton(onClick = onBack) { Text("Voltar") }
             Text(stringResource(state.category.labelResource()), style = MaterialTheme.typography.headlineMedium,
                 modifier = Modifier.semantics { heading() })
             Text(DashboardFormatting.period(state.period), style = MaterialTheme.typography.titleMedium)
@@ -67,7 +67,7 @@ fun FinancialDetailScreen(state: FinancialDetailUiState, deletion: DeletionState
     onBack: () -> Unit, onEdit: () -> Unit, onDelete: () -> Unit,
     onCancelDelete: () -> Unit, onConfirmDelete: () -> Unit) {
     DetailLayout("financial-detail") {
-        item("back") { TextButton(onClick = onBack, enabled = deletion != DeletionState.DELETING) { Text("← Voltar") } }
+        item("back") { TextButton(onClick = onBack, enabled = deletion != DeletionState.DELETING) { Text("Voltar") } }
         val item = state.item
         when {
             state.loading -> item { CircularProgressIndicator() }

@@ -47,7 +47,17 @@ private fun previewAnalysis(withIncome: Boolean = true, manySources: Boolean = f
 @Preview(name = "Tela estreita e fonte ampliada", widthDp = 320, heightDp = 720, fontScale = 1.6f, locale = "pt-rBR")
 @Composable
 fun NormalDashboardPreview() {
-    DashboardTheme { DashboardScreen(MonthlyAnalysisUiState.Success(previewPeriod, previewAnalysis())) }
+    DashboardTheme { DashboardScreen(MonthlyAnalysisUiState.Success(previewPeriod, previewAnalysis()), onHistory = {}, onAdd = {}) }
+}
+
+@Preview(name = "Valores grandes e fonte ampliada", widthDp = 320, heightDp = 720, fontScale = 1.6f, locale = "pt-rBR")
+@Composable
+fun LargeAmountsDashboardPreview() {
+    val analysis = MonthlyAnalysisEngine().analyze(previewPeriod, movements = listOf(
+        Movement("large-income", MovementType.INCOME, "Renda", 99999999900L, null, previewPeriod.atDay(1)),
+        Movement("large-expense", MovementType.EXPENSE, "Despesa", 88888888800L, ExpenseCategory.FOOD, previewPeriod.atDay(1)),
+    ))
+    DashboardTheme { DashboardScreen(MonthlyAnalysisUiState.Success(previewPeriod, analysis), onHistory = {}, onAdd = {}) }
 }
 
 @Preview(name = "Sem renda", widthDp = 411, heightDp = 891, locale = "pt-rBR")

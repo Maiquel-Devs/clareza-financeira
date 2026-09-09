@@ -39,7 +39,7 @@ class FinancialDetailNavigationTest {
     @After fun cleanup() { if (::vm.isInitialized) compose.runOnUiThread { vm.viewModelScope.cancel() } }
     private fun scroll(text: String) { compose.onNode(hasScrollToNodeAction()).performScrollToNode(hasText(text)) }
     private fun open(text: String) { scroll(text); compose.onNodeWithText(text).performClick() }
-    private fun back() { scroll("← Voltar"); compose.onNodeWithText("← Voltar").performClick() }
+    private fun back() { scroll("Voltar"); compose.onNodeWithText("Voltar").performClick() }
     private fun position() = compose.onNode(hasScrollToNodeAction()).fetchSemanticsNode()
         .config[SemanticsProperties.VerticalScrollAxisRange].value()
     private fun waitFor(text: String) { compose.waitUntil(10000) { compose.onAllNodesWithText(text).fetchSemanticsNodes().isNotEmpty() } }
@@ -48,10 +48,10 @@ class FinancialDetailNavigationTest {
         for (i in 1..12) save("Gasto $i")
         start(); scroll("Moradia"); val dashboardScroll = position()
         compose.onNodeWithText("Moradia").performClick(); waitFor("12 gastos")
-        compose.onNodeWithText("← Voltar").assertIsDisplayed()
+        compose.onNodeWithText("Voltar").assertIsDisplayed()
         scroll("Gasto 8"); val listScroll = position()
         compose.onNodeWithText("Gasto 8").performClick(); waitFor("Detalhes da despesa")
-        compose.onNodeWithText("← Voltar").assertIsDisplayed()
+        compose.onNodeWithText("Voltar").assertIsDisplayed()
         back(); assertEquals(listScroll,position())
         back()
         assertEquals(dashboardScroll,position())
@@ -83,9 +83,9 @@ class FinancialDetailNavigationTest {
         save("Aluguel histórico",monthly = true,month = past)
         start(); compose.onNodeWithText("Histórico").performClick()
         compose.onNodeWithContentDescription("Ano anterior").performClick()
-        waitFor(DashboardFormatting.period(past.withMonth(12)))
-        scroll(DashboardFormatting.period(past)); val historyScroll = position()
-        compose.onNodeWithText(DashboardFormatting.period(past)).performClick()
+        waitFor("Dezembro")
+        scroll("Abril"); val historyScroll = position()
+        compose.onNodeWithText("Abril").performClick()
         waitFor("Renda"); compose.onNodeWithText("+ Adicionar").assertDoesNotExist()
         open("Moradia"); waitFor("1 gasto"); open("Aluguel histórico"); waitFor("Detalhes da despesa")
         scroll(DashboardFormatting.period(past)); compose.onNodeWithText(DashboardFormatting.period(past)).assertIsDisplayed()
@@ -102,4 +102,3 @@ class FinancialDetailNavigationTest {
         compose.onNodeWithText("Histórico").assertIsDisplayed()
     }
 }
-

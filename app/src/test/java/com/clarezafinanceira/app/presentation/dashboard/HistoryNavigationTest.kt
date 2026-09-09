@@ -29,7 +29,7 @@ class HistoryNavigationTest {
         compose.onNodeWithText("+ Adicionar").assertIsDisplayed()
         compose.onNodeWithText("Histórico").performClick()
         assertTrue(opened)
-        compose.onNodeWithText("← Voltar").assertDoesNotExist()
+        compose.onNodeWithText("Voltar").assertDoesNotExist()
     }
 
     @Test fun historicalDashboardHidesAddAndHistoryAndHasBack() {
@@ -37,7 +37,7 @@ class HistoryNavigationTest {
         compose.setContent { DashboardTheme { DashboardScreen(state, onAdd = {}, onHistory = {}, onBack = { returned = true }) } }
         compose.onNodeWithText("+ Adicionar").assertDoesNotExist()
         compose.onNodeWithText("Histórico").assertDoesNotExist()
-        compose.onNodeWithText("← Voltar").performClick()
+        compose.onNodeWithText("Voltar").performClick()
         assertTrue(returned)
     }
 
@@ -63,7 +63,7 @@ class HistoryNavigationTest {
         compose.onNodeWithText("ATUAL").assertExists()
         compose.onNodeWithText("Nenhuma renda informada").assertExists()
         compose.onNodeWithText("Não disponível").assertExists()
-        compose.onNodeWithText("Setembro de 2026").performClick()
+        compose.onNodeWithText("Setembro").performClick()
         assertEquals(period,selected)
     }
 
@@ -83,21 +83,21 @@ class HistoryNavigationTest {
         compose.setContent { DashboardTheme { EntryNavigation(container,vm) } }
         compose.onNodeWithText("Histórico").performClick()
         compose.onNodeWithContentDescription("Ano anterior").performClick()
-        val title = DashboardFormatting.period(YearMonth.of(year,4))
-        compose.waitUntil(10000) { compose.onAllNodesWithText(DashboardFormatting.period(YearMonth.of(year,12))).fetchSemanticsNodes().isNotEmpty() }
+        val title = "Abril"
+        compose.waitUntil(10000) { compose.onAllNodesWithText("Dezembro").fetchSemanticsNodes().isNotEmpty() }
         compose.onNodeWithTag("history-months").performScrollToNode(hasText(title))
         val previousScroll = compose.onNodeWithTag("history-months").fetchSemanticsNode()
             .config[androidx.compose.ui.semantics.SemanticsProperties.VerticalScrollAxisRange].value()
         compose.onNodeWithText(title).assertIsDisplayed().performClick()
-        compose.onNodeWithText(title).assertIsDisplayed()
+        compose.onNodeWithText(DashboardFormatting.period(YearMonth.of(year,4))).assertIsDisplayed()
         compose.onNodeWithText("+ Adicionar").assertDoesNotExist()
-        compose.onNodeWithText("← Voltar").performClick()
+        compose.onNodeWithText("Voltar").performClick()
         compose.onNodeWithText("Histórico").assertIsDisplayed()
         compose.onNodeWithText(title).assertIsDisplayed()
         val restoredScroll = compose.onNodeWithTag("history-months").fetchSemanticsNode()
             .config[androidx.compose.ui.semantics.SemanticsProperties.VerticalScrollAxisRange].value()
         assertEquals(previousScroll, restoredScroll)
-        compose.onNodeWithText("← Voltar").performClick()
+        compose.onNodeWithText("Voltar").performClick()
         compose.onNodeWithText("+ Adicionar").assertIsDisplayed()
         compose.onNodeWithText(DashboardFormatting.period(now)).assertIsDisplayed()
     }
