@@ -43,6 +43,6 @@ Criados (caminhos Kotlin relativos a `app/src/main/java/com/clarezafinanceira/ap
 - `presentation/entry/EntryScreen.kt`
 - `presentation/entry/EntryNavigation.kt`
 - Testes em `app/src/test/java/com/clarezafinanceira/app`: `data/repository/FinancialEntryRepositoryTest.kt`, `presentation/entry/MoneyInputTest.kt`, `presentation/entry/EntryViewModelTest.kt`, `presentation/entry/EntryScreenTest.kt`.
-- `docs/FEAT-06.md`.
+- `docs/FEAT-06.md` (caminho original; atualmente em `docs/historico/FEAT-06.md`).
 
 Alterados: `app/build.gradle.kts`, `AppContainer.kt`, `MainActivity.kt`, `data/local/MovementEntity.kt` (nome não vazio), `presentation/dashboard/DashboardScreen.kt`.

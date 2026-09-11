@@ -230,8 +230,8 @@ O Manifest mantém `android:allowBackup="true"`. A ausência de sincronização 
 ## Referências internas
 
 - [Produto atual](produto-atual.md) e [regras do produto](regras-do-produto.md).
-- [Análise mensal](analise-mensal.md), [persistência local](persistencia-local.md), [repository/análise](repository-analise-mensal.md) e [application state](feat-04-application-state.md).
-- [Dashboard](feat-05-monthly-dashboard.md), [cadastro](FEAT-06.md), [recorrências](FEAT-07.md), [Histórico](FEAT-08.md), [detalhamento](FEAT-09.md), [gráficos](FEAT-10.md) e [revisão pré-FEAT 11](PRE-FEAT-11-UX-REVIEW.md).
+- [Análise mensal](tecnico/analise-mensal.md), [persistência local](tecnico/persistencia-local.md), [repository/análise](tecnico/repository-analise-mensal.md) e [application state](historico/feat-04-application-state.md).
+- [Dashboard](historico/feat-05-monthly-dashboard.md), [cadastro](historico/FEAT-06.md), [recorrências](historico/FEAT-07.md), [Histórico](historico/FEAT-08.md), [detalhamento](historico/FEAT-09.md), [gráficos](historico/FEAT-10.md) e [revisão pré-FEAT 11](historico/PRE-FEAT-11-UX-REVIEW.md).
 
 Os documentos históricos que descrevem ausência de repository, interfaces, UI ou edição recorrente retratam etapas anteriores. Hoje existem contratos de domínio, repositories de leitura/escrita e `upserts` para edição de versões/exceções. Essas limitações antigas não definem a arquitetura vigente.
 

@@ -55,7 +55,7 @@ Os warnings não são falhas funcionais e não invalidaram a homologação. A su
 ### Origem e limites da evidência
 
 - [Produto atual](produto-atual.md) já registra o MVP concluído e a homologação como aprovado com observações. [Arquitetura atual](arquitetura-atual.md) registra 278 testes, sem falhas, erros ou ignorados.
-- A [revisão pré-FEAT 11](PRE-FEAT-11-UX-REVIEW.md) documenta `test build lint` aprovado, 278 testes sem falhas, erros ou ignorados, builds debug/release aprovados e os 11 avisos na distribuição acima. Esse registro é anterior à homologação final e serve como evidência de apoio, sem ser apresentado como relatório da FEAT 11.
+- A [revisão pré-FEAT 11](historico/PRE-FEAT-11-UX-REVIEW.md) documenta `test build lint` aprovado, 278 testes sem falhas, erros ou ignorados, builds debug/release aprovados e os 11 avisos na distribuição acima. Esse registro é anterior à homologação final e serve como evidência de apoio, sem ser apresentado como relatório da FEAT 11.
 - Não há relatório específico da FEAT 11 em `docs/`. A conclusão de FEAT 00 a FEAT 11, a ausência de bloqueadores e regressões funcionais confirmadas na homologação final, as 25 classes, a nova execução debug aprovada e a situação da assinatura são **informações fornecidas para esta Consolidação 05**. O mesmo vale para as observações de encerramento e o fluxo de próximas fases abaixo, quando não corroborados pelos documentos citados.
 
 O registro histórico da FEAT 10 menciona oito avisos de lint. A revisão pré-FEAT 11 já explica a contagem posterior de onze, associada aos avisos de versões disponíveis, sem alteração de dependências ou manifesto naquele pacote. São resultados de momentos distintos; o marco final adotado aqui é de onze avisos.

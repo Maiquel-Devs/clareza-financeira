@@ -57,7 +57,7 @@ Capturas locais ignoradas pelo Git em `app/build/android-validation/`: `pre-feat
 
 ## Arquivos e entrega
 
-Criado: `docs/PRE-FEAT-11-UX-REVIEW.md`.
+Criado: `docs/PRE-FEAT-11-UX-REVIEW.md` (caminho original; atualmente em `docs/historico/PRE-FEAT-11-UX-REVIEW.md`).
 
 Alterados:
 

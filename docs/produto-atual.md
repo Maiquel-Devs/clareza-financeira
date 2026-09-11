@@ -94,7 +94,7 @@ O princípio é: **o normal deve acontecer automaticamente; o usuário age princ
 
 Também é possível interromper uma recorrência, escolhendo se ela permanece no período selecionado. A interrupção preserva o histórico anterior. Excluir é uma ação diferente: remove a recorrência de todos os períodos, inclusive anteriores, mediante confirmação.
 
-Essas regras representam uma continuidade fornecida pelo usuário, sem criar artificialmente movimentações pontuais futuras. O detalhamento completo das regras fica reservado à futura documentação `regras-do-produto.md`.
+Essas regras representam uma continuidade fornecida pelo usuário, sem criar artificialmente movimentações pontuais futuras. O detalhamento completo está em [regras do produto](regras-do-produto.md).
 
 ### Histórico
 
@@ -162,16 +162,16 @@ Os itens abaixo são limites de escopo, não funcionalidades faltantes nem prome
 
 A homologação FEAT 11 terminou como **APROVADO COM OBSERVAÇÕES**, com confirmação de que o produto pode ser declarado MVP concluído. Esse estado se refere ao escopo homologado; não significa publicação em loja.
 
-O resultado foi apresentado na homologação e confirmado para esta consolidação. Ainda não há um arquivo específico da FEAT 11 em `docs/`; o relatório detalhado e suas observações ficam reservados à documentação específica de estado do MVP.
+O resultado foi apresentado na homologação e confirmado para esta consolidação. Ainda não há um arquivo específico da FEAT 11 em `docs/`; o resultado técnico e suas observações estão registrados em [estado do MVP](estado-do-mvp.md).
 
 ## Referências internas
 
 Este documento apresenta o produto vigente. Os documentos de FEATs continuam sendo registros da evolução e podem descrever limitações de uma etapa já superada.
 
-- [Análise mensal](analise-mensal.md) e [persistência local](persistencia-local.md).
-- [Dashboard](feat-05-monthly-dashboard.md) e [cadastro e edição](FEAT-06.md).
-- [Recorrências e exceções](FEAT-07.md).
-- [Histórico](FEAT-08.md) e [detalhamento financeiro](FEAT-09.md).
-- [Gráficos e UX](FEAT-10.md) e [revisão pré-FEAT 11](PRE-FEAT-11-UX-REVIEW.md).
+- [Análise mensal](tecnico/analise-mensal.md) e [persistência local](tecnico/persistencia-local.md).
+- [Dashboard](historico/feat-05-monthly-dashboard.md) e [cadastro e edição](historico/FEAT-06.md).
+- [Recorrências e exceções](historico/FEAT-07.md).
+- [Histórico](historico/FEAT-08.md) e [detalhamento financeiro](historico/FEAT-09.md).
+- [Gráficos e UX](historico/FEAT-10.md) e [revisão pré-FEAT 11](historico/PRE-FEAT-11-UX-REVIEW.md).
 
-Em caso de dúvida sobre o comportamento vigente, considerar o código e os testes atuais, as decisões posteriores que substituem as antigas e o resultado da homologação. Esta visão de produto não substitui a futura documentação consolidada de arquitetura ou de regras.
+Em caso de dúvida sobre o comportamento vigente, considerar o código e os testes atuais, as decisões posteriores que substituem as antigas e o resultado da homologação. Esta visão de produto não substitui a documentação consolidada de [arquitetura](arquitetura-atual.md), [regras](regras-do-produto.md) ou [fluxos e UX](fluxos-e-ux.md).

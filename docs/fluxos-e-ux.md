@@ -230,7 +230,7 @@ O “+ Adicionar” mantém sua posição flutuante atual. Conteúdo pode passar
 ## Referências e limites deste registro
 
 - Contexto: [produto atual](produto-atual.md), [regras do produto](regras-do-produto.md) e [arquitetura atual](arquitetura-atual.md).
-- Registros de apoio: [Dashboard](feat-05-monthly-dashboard.md), [cadastro/edição](FEAT-06.md), [recorrências](FEAT-07.md), [Histórico](FEAT-08.md), [detalhamento](FEAT-09.md), [gráficos](FEAT-10.md) e [revisão pré-FEAT 11](PRE-FEAT-11-UX-REVIEW.md).
+- Registros de apoio: [Dashboard](historico/feat-05-monthly-dashboard.md), [cadastro/edição](historico/FEAT-06.md), [recorrências](historico/FEAT-07.md), [Histórico](historico/FEAT-08.md), [detalhamento](historico/FEAT-09.md), [gráficos](historico/FEAT-10.md) e [revisão pré-FEAT 11](historico/PRE-FEAT-11-UX-REVIEW.md).
 - Conferência no código: telas de Dashboard, formulários, diálogos recorrentes, Histórico, detalhes, gráficos e `EntryNavigation`, sob `app/src/main/java/com/clarezafinanceira/app/presentation/`.
 - Conferência de navegação e retorno: `FinancialDetailNavigationTest.kt` e `HistoryNavigationTest.kt`, sob `app/src/test/java/com/clarezafinanceira/app/presentation/dashboard/`.
 
