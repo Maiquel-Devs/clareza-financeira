@@ -60,7 +60,7 @@ Os detalhes refletem os dados atuais. Se o item deixar de pertencer ao período 
 
 **Dashboard atual → + Adicionar → formulário → Salvar → Dashboard atual.**
 
-O botão abre um único formulário, inicialmente de despesa pontual. Nele, a pessoa escolhe **“Despesa”** ou **“Receita”**. O título acompanha a escolha: **“Nova despesa”** ou **“Nova renda”**. O seletor usa “Receita”, embora os títulos e demais áreas usem “renda”; esses são os textos atuais.
+O botão abre um único formulário, inicialmente de despesa pontual. Nele, a pessoa escolhe **“Despesa”** ou **“Renda”**. O título acompanha a escolha: **“Nova despesa”** ou **“Nova renda”**.
 
 A opção **“Acontece todo mês?”** distingue pontual de mensal. Não há etapas adicionais de onboarding, escolha de conta ou confirmação mensal de uma recorrência normal.
 

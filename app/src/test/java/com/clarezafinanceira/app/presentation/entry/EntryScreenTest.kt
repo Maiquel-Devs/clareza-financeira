@@ -35,7 +35,7 @@ class EntryScreenTest {
         compose.onNodeWithText("Dia habitual (1 a 31)").assertDoesNotExist()
     }
     @Test fun incomeHasNoCategoryAndClearTitle() {
-        show(); compose.onNodeWithText("Receita").performClick()
+        show(); compose.onNodeWithText("Renda").performClick()
         compose.onNodeWithText("Nova renda").assertExists()
         compose.onNodeWithText("Origem / nome da renda").assertExists()
         compose.onNodeWithText("Categoria").assertDoesNotExist()

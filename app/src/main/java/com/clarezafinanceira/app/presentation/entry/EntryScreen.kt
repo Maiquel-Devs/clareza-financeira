@@ -55,7 +55,7 @@ fun EntryScreen(state: EntryState, onChange: ((EntryState) -> EntryState) -> Uni
                         selectedContainerColor = MaterialTheme.colorScheme.primaryContainer,
                         selectedLabelColor = MaterialTheme.colorScheme.onPrimaryContainer))
                 FilterChip(selected = income, enabled = enabled,
-                    onClick = { onChange { it.copy(type = MovementType.INCOME, category = null) } }, label = { Text("Receita") },
+                    onClick = { onChange { it.copy(type = MovementType.INCOME, category = null) } }, label = { Text("Renda") },
                     colors = FilterChipDefaults.filterChipColors(
                         selectedContainerColor = MaterialTheme.colorScheme.secondaryContainer,
                         selectedLabelColor = MaterialTheme.colorScheme.onSecondaryContainer))
