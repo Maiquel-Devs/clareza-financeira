@@ -19,6 +19,10 @@ import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -36,6 +40,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.pluralStringResource
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.clearAndSetSemantics
 import androidx.compose.ui.semantics.heading
@@ -54,15 +59,15 @@ import com.clarezafinanceira.app.presentation.MonthlyAnalysisViewModel
 
 @Composable
 fun DashboardRoute(viewModel: MonthlyAnalysisViewModel, onAdd: (() -> Unit)? = null,
-    onCategory: ((ExpenseCategory, java.time.YearMonth) -> Unit)? = null, onItem: ((com.clarezafinanceira.app.domain.FinancialItemReference) -> Unit)? = null, onHistory: (() -> Unit)? = null, onBack: (() -> Unit)? = null) {
+    onCategory: ((ExpenseCategory, java.time.YearMonth) -> Unit)? = null, onItem: ((com.clarezafinanceira.app.domain.FinancialItemReference) -> Unit)? = null, onHistory: (() -> Unit)? = null, onBack: (() -> Unit)? = null, onAbout: (() -> Unit)? = null) {
     val state by viewModel.uiState.collectAsStateWithLifecycle()
-    DashboardScreen(state, onAdd = onAdd, onCategory = onCategory, onItem = onItem, onHistory = onHistory, onBack = onBack)
+    DashboardScreen(state, onAdd = onAdd, onCategory = onCategory, onItem = onItem, onHistory = onHistory, onBack = onBack, onAbout = onAbout)
 }
 
 /** Stateless UI: only domain analysis and explicit loading/error states enter this screen. */
 @Composable
 fun DashboardScreen(state: MonthlyAnalysisUiState, modifier: Modifier = Modifier,
-    onAdd: (() -> Unit)? = null, onCategory: ((ExpenseCategory, java.time.YearMonth) -> Unit)? = null, onItem: ((com.clarezafinanceira.app.domain.FinancialItemReference) -> Unit)? = null, onHistory: (() -> Unit)? = null, onBack: (() -> Unit)? = null) {
+    onAdd: (() -> Unit)? = null, onCategory: ((ExpenseCategory, java.time.YearMonth) -> Unit)? = null, onItem: ((com.clarezafinanceira.app.domain.FinancialItemReference) -> Unit)? = null, onHistory: (() -> Unit)? = null, onBack: (() -> Unit)? = null, onAbout: (() -> Unit)? = null) {
     var chartExpanded by rememberSaveable(state.period) { mutableStateOf(false) }
     val chartRows = if (state is MonthlyAnalysisUiState.Success && chartExpanded)
         remember(state.analysis.expensesByCategory) { ChartData.expenses(state.analysis.expensesByCategory) } else emptyList()
@@ -78,9 +83,12 @@ fun DashboardScreen(state: MonthlyAnalysisUiState, modifier: Modifier = Modifier
                     item(key = "header") {
                         Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
                             if (onBack != null) TextButton(onClick = onBack) { Text("Voltar") }
-                            Text(stringResource(R.string.app_name),
-                                style = MaterialTheme.typography.labelLarge,
-                                color = MaterialTheme.colorScheme.primary)
+                            Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
+                                Text(stringResource(R.string.app_name), Modifier.weight(1f),
+                                    style = MaterialTheme.typography.labelLarge,
+                                    color = MaterialTheme.colorScheme.primary)
+                                if (onBack == null && onAbout != null) DashboardMenu(onAbout)
+                            }
                             Text(
                                 DashboardFormatting.period(state.period),
                                 style = MaterialTheme.typography.headlineMedium,
@@ -141,6 +149,23 @@ fun DashboardScreen(state: MonthlyAnalysisUiState, modifier: Modifier = Modifier
                 onClick = onAdd,
                 modifier = Modifier.align(Alignment.BottomEnd).padding(20.dp),
             ) { Text("+ Adicionar") }
+        }
+    }
+}
+
+@Composable
+private fun DashboardMenu(onAbout: () -> Unit) {
+    var expanded by remember { mutableStateOf(false) }
+    Box {
+        IconButton(onClick = { expanded = true }) {
+            Icon(painterResource(R.drawable.ic_more_vert),
+                contentDescription = stringResource(R.string.dashboard_more_options))
+        }
+        DropdownMenu(expanded = expanded, onDismissRequest = { expanded = false }) {
+            DropdownMenuItem(text = { Text(stringResource(R.string.about_title)) }, onClick = {
+                expanded = false
+                onAbout()
+            })
         }
     }
 }

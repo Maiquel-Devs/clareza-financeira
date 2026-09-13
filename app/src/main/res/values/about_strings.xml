@@ -1,0 +1,14 @@
+<resources>
+    <string name="dashboard_more_options">Mais opções</string>
+    <string name="about_title">Sobre</string>
+    <string name="about_back">Voltar</string>
+    <string name="about_tagline">Organize sua vida financeira sem complicação.</string>
+    <string name="about_project_heading">Sobre o projeto</string>
+    <string name="about_project_description">O Clareza Financeira foi criado para ajudar pessoas a entenderem sua situação financeira de forma simples, rápida e clara.</string>
+    <string name="about_developer_heading">Desenvolvedor</string>
+    <string name="about_developer_name">Maiquel</string>
+    <string name="about_project_page">Página do projeto</string>
+    <string name="about_open_source">Projeto open source</string>
+    <string name="about_license">Licença MIT</string>
+    <string name="about_link_failed">Não foi possível abrir a página do projeto. Verifique se há um navegador disponível e tente novamente.</string>
+</resources>

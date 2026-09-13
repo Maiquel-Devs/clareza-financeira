@@ -116,6 +116,8 @@ Os registros são mantidos localmente no dispositivo e permanecem após fechar e
 
 ## Direção de UX
 
+O refinamento pós-MVP REF03 disponibiliza **Dashboard → ⋮ → Sobre**. A tela apresenta o propósito do aplicativo, o desenvolvedor Maiquel, a condição de projeto open source e a licença MIT, com acesso à página oficial no navegador externo. Esse acesso discreto mantém o Dashboard focado nas finanças e não envia dados financeiros ao abrir o link.
+
 A direção vigente é **leve, confortável, clara, amigável e moderna**. Títulos, espaçamentos e hierarquia favorecem a leitura; os controles de retorno usam “Voltar”, e o acesso ao histórico é apresentado como “Histórico ›”.
 
 A legibilidade tem prioridade sobre uma disposição fixa. Os cards Renda e Despesas registradas podem ficar lado a lado ou empilhados, conforme largura, fonte e conteúdo. Valores maiores podem exigir empilhamento; isso faz parte da experiência responsiva aceita.

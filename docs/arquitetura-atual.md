@@ -55,6 +55,7 @@ O pacote base é `com.clarezafinanceira.app`, sob `app/src/main/java/`.
 | Raiz do pacote | `Application`, `MainActivity` e composição das dependências em `AppContainer`. |
 | `presentation/` | Estado e ViewModel da análise mensal. |
 | `presentation/dashboard/` | Dashboard, componentes, tema e formatação de apresentação. |
+| `presentation/about/` | Tela estática Sobre e abertura segura da URL pública do projeto. |
 | `presentation/entry/` | Formulários pontuais/recorrentes, validação de entrada, diálogos e grafo de navegação. |
 | `presentation/history/` | Seleção anual e estado/apresentação do Histórico. |
 | `presentation/detail/` | Categorias, detalhes dos itens e estado de exclusão pontual. |
@@ -74,6 +75,8 @@ O diretório `Prototipo/` é referência histórica; não é módulo Android nem
 `MainActivity` é uma `ComponentActivity` que instala o conteúdo Compose e o tema. As funções `Route` coletam os estados dos ViewModels com `collectAsStateWithLifecycle`; telas e componentes recebem estados e callbacks. A renderização não recebe entidades Room nem acessa DAOs.
 
 O grafo Navigation Compose está em `presentation/entry/EntryNavigation.kt`, apesar de abranger também Dashboard, Histórico, categorias e detalhes. As rotas carregam identificadores, origem do item e período conforme necessário, não cópias serializadas dos valores financeiros. O detalhe observa novamente o item efetivo pela referência recebida.
+
+No REF03, o menu de overflow do Dashboard principal abre a rota `about` no mesmo NavHost. `AboutRoute`/`AboutScreen` reutilizam o tema e o ícone adaptativo oficial, sem ViewModel, repository ou acesso ao banco. `openProjectPage` lança `Intent.ACTION_VIEW` com a URL HTTPS fixa da página do projeto, sem extras ou parâmetros financeiros; trata `ActivityNotFoundException` e `SecurityException`, permitindo à tela informar a falha. Não há WebView, nova dependência ou mudança nas permissões/backup.
 
 O ViewModel do Dashboard principal pertence à Activity. Os demais são criados no escopo das entradas de navegação; o Dashboard histórico recebe seu próprio `MonthlyAnalysisViewModel` e período. Isso evita substituir a seleção do Dashboard principal ao consultar outro mês.
 

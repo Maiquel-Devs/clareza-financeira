@@ -20,6 +20,7 @@ import androidx.navigation.navArgument
 import com.clarezafinanceira.app.AppContainer
 import com.clarezafinanceira.app.presentation.MonthlyAnalysisViewModel
 import com.clarezafinanceira.app.presentation.dashboard.DashboardRoute
+import com.clarezafinanceira.app.presentation.about.AboutRoute
 
 @Composable
 fun EntryNavigation(container: AppContainer, analysis: MonthlyAnalysisViewModel) {
@@ -35,9 +36,13 @@ fun EntryNavigation(container: AppContainer, analysis: MonthlyAnalysisViewModel)
         popEnterTransition = { fadeIn(tween(100)) }, popExitTransition = { fadeOut(tween(70)) }) {
         composable("dashboard") {
             DashboardRoute(analysis,
+                onAbout = { navigation.navigate("about") { launchSingleTop = true } },
                 onHistory = { navigation.navigate("history") { launchSingleTop = true } },
                 onAdd = { navigation.navigate("movement/new") { launchSingleTop = true } },
                 onCategory = openCategory, onItem = openItem)
+        }
+        composable("about") {
+            AboutRoute(onBack = { navigation.popBackStack() })
         }
         composable("history") {
             val history: HistoryViewModel = viewModel(factory = viewModelFactory {

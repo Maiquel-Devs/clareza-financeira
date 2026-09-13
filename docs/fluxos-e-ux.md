@@ -238,7 +238,13 @@ O “+ Adicionar” mantém sua posição flutuante atual. Conteúdo pode passar
 
 O acesso provisório “Editar movimentações” no Dashboard, a ausência de Histórico/detalhes/gráficos nas primeiras entregas, as setas textuais junto de “Voltar” e a repetição de ano nos cards mensais não descrevem mais a experiência vigente.
 
-A ideia pós-MVP de “Sobre / Página do desenvolvedor” não faz parte dos fluxos atuais. Sua localização e seu conteúdo não estão definidos por este documento.
+## Sobre / Desenvolvedor (REF03)
+
+**Dashboard principal → ⋮ → Sobre.** O menu discreto no cabeçalho tem descrição acessível “Mais opções” e oferece somente “Sobre”. A informação institucional fica nessa tela, sem cards no conteúdo financeiro ou nova estrutura global de navegação. O Dashboard histórico conserva sua navegação existente.
+
+A tela Sobre usa o tema nativo atual e o ícone oficial do REF01. Apresenta “Clareza Financeira”, “Organize sua vida financeira sem complicação.”, o propósito do projeto, “Desenvolvedor — Maiquel”, “Projeto open source” e “Licença MIT”. O conteúdo permite rolagem e respeita fonte ampliada. “Voltar” e o retorno do sistema seguem a pilha de navegação até o Dashboard.
+
+“Página do projeto” abre `https://maiquel-devs.github.io/clareza-financeira-landing-page/` no navegador externo. A URL é fixa, sem parâmetros ou dados financeiros. Se não houver aplicação disponível ou a abertura for bloqueada, a tela mostra uma mensagem e permite tentar novamente. Não há WebView nem links de GitHub/LinkedIn nesta versão.
 
 ## Decisões de UX que uma evolução futura deve preservar
 
