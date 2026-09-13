@@ -164,6 +164,8 @@ Ao tocar em um mês, o Dashboard mostra novamente mês e ano completos e a mesma
 
 O modo histórico mantém essas diferenças mesmo se o card escolhido for o mês atual. Para um novo registro retroativo, a pessoa usa o cadastro do Dashboard principal e escolhe a data ou o mês inicial correspondente.
 
+Com o REF02, o Dashboard principal acompanha a virada mensal, tanto com o aplicativo aberto quanto ao retornar do segundo plano. O Histórico atualiza os meses disponíveis, o selo ATUAL e o limite de próximo ano. Seu ano acompanha o calendário enquanto não houver seleção explícita; após a pessoa escolher um ano, ele permanece fixo. O Dashboard aberto por um card também permanece no mês escolhido, mesmo se ele era o atual ao abrir. Formulários já abertos preservam todos os campos; somente um novo cadastro recebe a data e o mês atuais como sugestões iniciais.
+
 ## 9. Voltar e recuperar a posição
 
 Os controles de retorno usam **“Voltar”**, sem seta textual redundante. O retorno respeita a hierarquia e a tela de origem: edição retorna ao detalhe; detalhe de despesa retorna à categoria; categoria retorna ao Dashboard; mês histórico retorna ao Histórico. O botão/gesto de retorno do sistema participa da navegação existente, respeitadas as restrições dos formulários durante a gravação.

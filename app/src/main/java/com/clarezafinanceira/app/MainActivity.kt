@@ -7,6 +7,10 @@ import androidx.activity.SystemBarStyle
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
+import kotlinx.coroutines.launch
 import com.clarezafinanceira.app.presentation.MonthlyAnalysisViewModel
 import com.clarezafinanceira.app.presentation.dashboard.DashboardTheme
 
@@ -19,6 +23,11 @@ class MainActivity : ComponentActivity() {
             navigationBarStyle = SystemBarStyle.auto(Color.TRANSPARENT, Color.TRANSPARENT) { false },
         )
         val container = (application as ClarezaFinanceiraApplication).container
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                container.currentPeriod.observeWhileActive()
+            }
+        }
         val viewModel = ViewModelProvider.create(this, container.monthlyAnalysisViewModelFactory)[
             MonthlyAnalysisViewModel::class.java
         ]

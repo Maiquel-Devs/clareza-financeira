@@ -41,8 +41,8 @@ fun EntryNavigation(container: AppContainer, analysis: MonthlyAnalysisViewModel)
         }
         composable("history") {
             val history: HistoryViewModel = viewModel(factory = viewModelFactory {
-                initializer { HistoryViewModel(HistoryRepository(container.monthlyAnalysisRepository, container.clock),
-                    container.clock, createSavedStateHandle()) }
+                initializer { HistoryViewModel(HistoryRepository(container.monthlyAnalysisRepository, container.clock,
+                    container.currentPeriod), container.clock, createSavedStateHandle(), container.currentPeriod) }
             })
             HistoryRoute(history, onBack = { navigation.popBackStack() }, onPeriod = { period ->
                 if (period <= YearMonth.now(container.clock)) navigation.navigate("dashboard/$period")
@@ -50,7 +50,7 @@ fun EntryNavigation(container: AppContainer, analysis: MonthlyAnalysisViewModel)
         }
         composable("dashboard/{period}", arguments = listOf(navArgument("period") { type = NavType.StringType })) { entry ->
             val historical: MonthlyAnalysisViewModel = viewModel(factory = viewModelFactory {
-                initializer { MonthlyAnalysisViewModel(container.monthlyAnalysisRepository, container.clock).apply {
+                initializer { MonthlyAnalysisViewModel(container.monthlyAnalysisRepository, container.clock, container.currentPeriod).apply {
                     selectPeriod(YearMonth.parse(requireNotNull(entry.arguments?.getString("period"))))
                 } }
             })

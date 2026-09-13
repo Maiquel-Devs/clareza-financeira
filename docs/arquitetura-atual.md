@@ -167,7 +167,9 @@ A observação do repository é fria, emite a análise inicial e usa `distinctUn
 
 Nos ViewModels de análise e Histórico, `flatMapLatest` troca a observação ao selecionar mês/ano. Análise, Histórico e detalhes compartilham seus estados com `stateIn` e `SharingStarted.Eagerly` no `viewModelScope`. A observação permanece ativa enquanto esses ViewModels existem, inclusive em entradas mantidas na pilha, e é cancelada quando seu escopo termina. Coleta da UI vinculada ao lifecycle não significa, aqui, desligar automaticamente a fonte do ViewModel.
 
-O repository não mantém escopo próprio, polling ou cache global compartilhado. Reutilizar a instância do repository não compartilha automaticamente todas as coletas mensais entre telas. O limite temporal do Histórico é capturado na criação da consulta; não há temporizador de virada do mês.
+O repository não mantém escopo próprio, polling ou cache global compartilhado. Reutilizar a instância do repository não compartilha automaticamente todas as coletas mensais entre telas. No REF02, `HistoryRepository` observa o `CurrentPeriod` compartilhado e recompõe os meses elegíveis e a marcação ATUAL quando o calendário muda, mesmo sem escrita no banco.
+
+`CurrentPeriod` usa o `Clock` existente e expõe o mês atual em `StateFlow`. `MainActivity` executa sua observação em `repeatOnLifecycle(STARTED)`: atualiza ao entrar em primeiro plano e mantém uma única espera até o início do próximo mês no fuso do relógio. A espera é cancelada em segundo plano e recalculada no retorno, sem polling periódico. O Dashboard principal acompanha esse estado; `selectPeriod` fixa uma consulta explícita, inclusive se o período escolhido era o atual. O Histórico acompanha o ano até uma seleção explícita do usuário; essa intenção fica no `SavedStateHandle`, enquanto o limite do ano atual continua reativo. Formulários não observam esse estado e conservam seus rascunhos.
 
 ## 10. Transações e tratamento de falhas
 
@@ -203,7 +205,7 @@ Enums persistidos usam códigos explícitos, não ordinais nem rótulos traduzid
 
 `ClarezaFinanceiraApplication`, registrada no Manifest, possui um `AppContainer` criado sob demanda. Ele mantém acesso ao banco singleton, relógio, repositories de análise, escrita e detalhe, além da factory do ViewModel mensal.
 
-`MainActivity` obtém o container pela Application e cria o ViewModel principal com `ViewModelProvider`. `EntryNavigation` usa factories com `initializer` e construtores explícitos para os ViewModels das rotas. `HistoryRepository` é criado na factory do Histórico, usando a fonte mensal e o relógio do container; não é uma propriedade do container.
+`MainActivity` obtém o container pela Application e cria o ViewModel principal com `ViewModelProvider`. `EntryNavigation` usa factories com `initializer` e construtores explícitos para os ViewModels das rotas. `HistoryRepository` é criado na factory do Histórico, usando a fonte mensal, o relógio e o `CurrentPeriod` compartilhado do container; não é uma propriedade do container.
 
 Isso é fornecimento manual de dependências. Não existem Hilt, Koin, Dagger ou outro framework de DI. As interfaces pequenas permitem substituição nos testes, e a composição explícita atende ao tamanho atual do projeto. Um framework não deve ser adicionado apenas para “modernizar”.
 
@@ -214,6 +216,7 @@ Os testes estão em `app/src/test/`, organizados por domínio, dados e apresenta
 - **Engine e conversões:** JUnit puro protege regras mensais, versões/exceções, precisão, independência temporal e erros de integridade.
 - **Persistência e repositories:** Room real sob Robolectric, com SQLite nativo, verifica consultas, reatividade, chaves, cascatas, rollback e reabertura de banco em arquivo. Há bancos em memória para isolamento.
 - **ViewModels e formulários:** contratos substituídos por implementações controladas, `Clock.fixed` e Coroutines Test verificam estados, cancelamento, validação, erros e bloqueio de operações repetidas.
+- **Atualização temporal (REF02):** relógio controlado por tempo virtual verifica viradas de mês/ano, retorno pelo lifecycle, limites e ATUAL no Histórico, seleções explícitas fixas e preservação dos rascunhos.
 - **Compose e navegação:** testes locais com Robolectric verificam semântica, estados, passagem do período, edição/exclusão, navegação e restauração de scroll. Não dependem de comparação de pixels.
 - **Gráficos e formatação:** verificam precisão, projeções visuais, escala e estados sem dados apropriados.
 

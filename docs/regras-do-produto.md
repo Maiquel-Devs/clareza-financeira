@@ -158,7 +158,7 @@ Os detalhes usam origem (pontual ou recorrente), ID e período para identificar 
 
 ## 10. Histórico e gráficos
 
-O Histórico consulta análises por período, agrupadas por ano, até o mês atual. Exibe somente meses com pelo menos uma renda ou despesa efetiva, em ordem decrescente. Um ano sem informação recebe uma mensagem própria, sem meses artificiais zerados. A consulta captura o limite atual ao ser criada; não há temporizador para atualizar esse limite na virada do mês com a tela continuamente aberta.
+O Histórico consulta análises por período, agrupadas por ano, até o mês atual. Exibe somente meses com pelo menos uma renda ou despesa efetiva, em ordem decrescente. Um ano sem informação recebe uma mensagem própria, sem meses artificiais zerados. O limite e a marcação ATUAL acompanham a mudança do calendário em primeiro plano e no retorno do segundo plano (REF02). O Dashboard atual e o ano do Histórico ainda não escolhido explicitamente acompanham o calendário; meses e anos selecionados pelo usuário permanecem fixos. A atualização temporal não sobrescreve datas, períodos ou outros campos de formulários abertos e não modifica fatos nem regras financeiras.
 
 **Histórico não é necessariamente uma fotografia imutável.** Ele é calculado com os registros e regras aplicáveis. Edições retroativas e exclusões podem alterar seus resultados ou retirar um mês que ficou vazio. Preservar os períodos anteriores ao alterar ou interromper uma recorrência não significa tornar todos os dados históricos intocáveis.
 

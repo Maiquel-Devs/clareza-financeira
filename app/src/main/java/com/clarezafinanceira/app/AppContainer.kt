@@ -14,10 +14,11 @@ class AppContainer(context: Context) {
         com.clarezafinanceira.app.data.repository.FinancialDetailRepository(monthlyAnalysisRepository)
     }
     val clock: Clock = Clock.systemDefaultZone()
+    val currentPeriod = com.clarezafinanceira.app.domain.CurrentPeriod(clock)
     val financialEntryRepository by lazy {
         com.clarezafinanceira.app.data.repository.FinancialEntryRepository(database, clock)
     }
     val monthlyAnalysisViewModelFactory by lazy {
-        MonthlyAnalysisViewModelFactory(monthlyAnalysisRepository, clock)
+        MonthlyAnalysisViewModelFactory(monthlyAnalysisRepository, clock, currentPeriod)
     }
 }

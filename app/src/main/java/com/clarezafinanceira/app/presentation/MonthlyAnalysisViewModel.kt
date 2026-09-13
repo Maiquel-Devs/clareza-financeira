@@ -3,6 +3,8 @@ package com.clarezafinanceira.app.presentation
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.clarezafinanceira.app.domain.MonthlyAnalysisSource
+import com.clarezafinanceira.app.domain.CurrentPeriod
+import kotlinx.coroutines.launch
 import java.time.Clock
 import java.time.YearMonth
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -19,9 +21,17 @@ import kotlinx.coroutines.flow.stateIn
 class MonthlyAnalysisViewModel(
     private val source: MonthlyAnalysisSource,
     clock: Clock,
+    currentPeriod: CurrentPeriod = CurrentPeriod(clock),
 ) : ViewModel() {
-    private val mutableSelectedPeriod = MutableStateFlow(YearMonth.now(clock))
+    private var followsCalendar = true
+    private val mutableSelectedPeriod = MutableStateFlow(currentPeriod.period.value)
     val selectedPeriod: StateFlow<YearMonth> = mutableSelectedPeriod.asStateFlow()
+
+    init {
+        viewModelScope.launch {
+            currentPeriod.period.collect { if (followsCalendar) mutableSelectedPeriod.value = it }
+        }
+    }
 
     val uiState: StateFlow<MonthlyAnalysisUiState> = selectedPeriod.flatMapLatest { period ->
         flow<MonthlyAnalysisUiState> {
@@ -37,6 +47,7 @@ class MonthlyAnalysisViewModel(
     )
 
     fun selectPeriod(period: YearMonth) {
+        followsCalendar = false
         mutableSelectedPeriod.value = period
     }
 }
