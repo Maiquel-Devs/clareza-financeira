@@ -114,6 +114,8 @@ No Dashboard, **“Ver gráfico das despesas”** aparece depois das categorias 
 
 Os registros são mantidos localmente no dispositivo e permanecem após fechar e reabrir o aplicativo. A análise é derivada das movimentações e das regras de recorrência informadas, acompanhando suas alterações. Não há conta do produto ou sincronização entre dispositivos.
 
+O backup financeiro em nuvem do Android foi deliberadamente excluído. Quando o sistema/fabricante suportar, pode ocorrer transferência direta do histórico completo entre aparelhos. Transferência não é sincronização e não garante recuperação: perda do aparelho pode significar perda do histórico quando não houver transferência disponível. Em versões sem separação segura entre nuvem e transferência, os dados são excluídos conservadoramente.
+
 ## Direção de UX
 
 O refinamento pós-MVP REF03 disponibiliza **Dashboard → ⋮ → Sobre**. A tela apresenta o propósito do aplicativo, o desenvolvedor Maiquel, a condição de projeto open source e a licença MIT, com acesso à página oficial no navegador externo. Esse acesso discreto mantém o Dashboard focado nas finanças e não envia dados financeiros ao abrir o link.

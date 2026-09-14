@@ -25,6 +25,8 @@ Um aplicativo Android para ajudar a pessoa a entender rapidamente sua situação
 - Gráficos opcionais de distribuição das despesas e evolução anual.
 - Persistência local dos dados, sem conta do produto ou sincronização própria entre dispositivos.
 
+Os dados financeiros são locais e estão excluídos do backup em nuvem do Android. O sistema pode transferir o histórico completo diretamente entre aparelhos quando houver suporte. Essa transferência não é sincronização nem garantia de recuperação: perder o aparelho pode significar perder o histórico se não houver transferência disponível.
+
 ## Como funciona
 
 **Renda − Previsão de despesas = Sobra prevista**

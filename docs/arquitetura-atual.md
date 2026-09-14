@@ -231,7 +231,11 @@ A referência de homologação do MVP é **278 testes, 0 falhas, 0 erros e 0 ign
 
 O MVP não possui backend próprio, API remota do produto, autenticação, sincronização própria/cloud, IA ou integração com serviço financeiro externo. Não há módulos separados de domínio/dados, framework complexo de DI ou biblioteca externa de gráficos.
 
-O Manifest mantém `android:allowBackup="true"`. A ausência de sincronização do produto não deve ser interpretada como uma garantia de que o backup do sistema Android foi desativado. O comportamento de backup não foi alterado nem homologado nesta consolidação.
+Na REF05, o Manifest mantém `android:allowBackup="true"` para permitir transferência nativa, mas aponta para regras explícitas. `res/xml/data_extraction_rules.xml` exclui todos os domínios do cloud backup no Android 12+ e permite somente `clareza-financeira.db` em `device-transfer`. A inclusão de um banco também contempla journal/WAL pelo mecanismo do Android; as quatro tabelas financeiras permanecem uma unidade. Outros arquivos e bancos futuros não entram automaticamente nessa lista de transferência.
+
+No Android 9–11, `res/xml-v28/backup_rules.xml` inclui somente esse banco com `requireFlags="deviceToDeviceTransfer"`: transporte sem essa condição não recebe os dados. No Android 8/8.1, `res/xml/backup_rules.xml` exclui todos os domínios como fallback conservador. As regras não criam sincronização, exportação ou servidor. A disponibilidade da transferência depende do sistema/fabricante; perder o aparelho pode significar perder o histórico. A configuração não comprova remoção retroativa de cópias feitas por versões anteriores.
+
+Referências: [Auto Backup e regras por versão](https://developer.android.com/identity/data/autobackup) e [tratamento de bancos/journal/WAL no Android](https://github.com/aosp-mirror/platform_frameworks_base/blob/master/core/java/android/app/backup/FullBackup.java). Testes locais verificam o contrato e a seleção de recursos; não substituem homologação de transferência real entre aparelhos.
 
 ## Referências internas
 

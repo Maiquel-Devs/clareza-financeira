@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<full-backup-content>
+    <!-- Android 9-11: only this database, only on a transport declaring D2D.
+         The platform also includes its SQLite journal/WAL; never split financial tables. -->
+    <include domain="database" path="clareza-financeira.db"
+        requireFlags="deviceToDeviceTransfer" />
+</full-backup-content>
