@@ -47,10 +47,10 @@ class FinancialEntryRepository(
         val effective = requireNotNull(findRecurrence(id, period))
         // Also guard callers outside the form against redundant writes.
         val patch = RecurrenceChanges(
-            changes.name?.trim()?.takeIf { it != effective.name },
-            changes.amountCents?.takeIf { it != effective.amountCents },
-            changes.category?.takeIf { it != effective.category },
-            changes.habitualDay?.takeIf { it != effective.habitualDay })
+            name = changes.name?.trim()?.takeIf { it != effective.name },
+            amountCents = changes.amountCents?.takeIf { it != effective.amountCents },
+            category = changes.category?.takeIf { it != effective.category },
+            habitualDay = changes.habitualDay?.takeIf { it != effective.habitualDay })
         if (patch.isEmpty) return@withTransaction
         val base = dao.versions(id).last { it.validFrom <= period }
         val old = dao.exceptionFor(id, period)
@@ -72,13 +72,18 @@ class FinancialEntryRepository(
                 overrideHabitualDay = if (patch.habitualDay != null) null else old.overrideHabitualDay,
                 updatedAt = now))
         } else {
-            persistException(RecurrenceExceptionEntity(old?.id ?: newId(), id, period,
-                (patch.name ?: old?.overrideName)?.takeIf { it != base.name },
-                (patch.amountCents ?: old?.overrideAmountCents)?.takeIf { it != base.amountCents },
-                (patch.category?.let { ExpenseCategory.valueOf(it.name) } ?: old?.overrideCategory)
+            persistException(RecurrenceExceptionEntity(
+                id = old?.id ?: newId(),
+                recurrenceId = id,
+                period = period,
+                overrideName = (patch.name ?: old?.overrideName)?.takeIf { it != base.name },
+                overrideAmountCents = (patch.amountCents ?: old?.overrideAmountCents)?.takeIf { it != base.amountCents },
+                overrideCategory = (patch.category?.let { ExpenseCategory.valueOf(it.name) } ?: old?.overrideCategory)
                     ?.takeIf { it != base.category },
-                (patch.habitualDay ?: old?.overrideHabitualDay)?.takeIf { it != base.habitualDay },
-                false, old?.createdAt ?: now, now))
+                overrideHabitualDay = (patch.habitualDay ?: old?.overrideHabitualDay)?.takeIf { it != base.habitualDay },
+                excluded = false,
+                createdAt = old?.createdAt ?: now,
+                updatedAt = now))
         }
     }
 
@@ -102,8 +107,17 @@ class FinancialEntryRepository(
             // explicitly so stopping here keeps a valid interval without including this month.
             val old = dao.exceptionFor(id, period)
             val now = clock.instant()
-            dao.putException(RecurrenceExceptionEntity(old?.id ?: newId(), id, period,
-                null, null, null, null, true, old?.createdAt ?: now, now))
+            dao.putException(RecurrenceExceptionEntity(
+                id = old?.id ?: newId(),
+                recurrenceId = id,
+                period = period,
+                overrideName = null,
+                overrideAmountCents = null,
+                overrideCategory = null,
+                overrideHabitualDay = null,
+                excluded = true,
+                createdAt = old?.createdAt ?: now,
+                updatedAt = now))
         }
     }
 
@@ -130,13 +144,33 @@ class FinancialEntryRepository(
         } else if (input.monthly) {
             val id = newId()
             database.recurrenceDao().create(
-                RecurrenceEntity(id, type, input.startPeriod, null, now, now),
-                RecurrenceVersionEntity(newId(), id, input.startPeriod, name,
-                    input.amountCents, category, input.habitualDay, now),
+                RecurrenceEntity(
+                    id = id,
+                    type = type,
+                    startPeriod = input.startPeriod,
+                    endPeriod = null,
+                    createdAt = now,
+                    updatedAt = now),
+                RecurrenceVersionEntity(
+                    id = newId(),
+                    recurrenceId = id,
+                    validFrom = input.startPeriod,
+                    name = name,
+                    amountCents = input.amountCents,
+                    category = category,
+                    habitualDay = input.habitualDay,
+                    createdAt = now),
             )
         } else {
-            database.movementDao().insert(MovementEntity(newId(), type, name,
-                input.amountCents, category, input.date, now, now))
+            database.movementDao().insert(MovementEntity(
+                id = newId(),
+                type = type,
+                name = name,
+                amountCents = input.amountCents,
+                category = category,
+                date = input.date,
+                createdAt = now,
+                updatedAt = now))
         }
     }
 }

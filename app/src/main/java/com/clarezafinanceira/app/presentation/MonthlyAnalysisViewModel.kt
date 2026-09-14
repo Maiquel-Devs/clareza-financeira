@@ -42,11 +42,15 @@ class MonthlyAnalysisViewModel(
         }.catch { cause -> emit(MonthlyAnalysisUiState.Error(period, cause)) }
     }.stateIn(
         scope = viewModelScope,
+        // Keep analysis current while this ViewModel remains on the back stack,
+        // avoiding a fresh loading state when returning to the screen.
         started = SharingStarted.Eagerly,
         initialValue = MonthlyAnalysisUiState.Loading(selectedPeriod.value),
     )
 
     fun selectPeriod(period: YearMonth) {
+        // An explicit selection stays fixed, even if it is today's month;
+        // a later calendar rollover must not move the selected consultation.
         followsCalendar = false
         mutableSelectedPeriod.value = period
     }

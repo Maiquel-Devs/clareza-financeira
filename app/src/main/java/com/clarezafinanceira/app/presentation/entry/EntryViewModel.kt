@@ -82,9 +82,15 @@ class EntryViewModel(
         mutable.value = value.copy(saving = true, error = null)
         viewModelScope.launch {
             try {
-                store.save(EntryInput(value.type, value.name.trim(), requireNotNull(money.cents),
-                    if (value.type == MovementType.EXPENSE) value.category else null,
-                    value.date, value.monthly, period ?: YearMonth.from(value.date), day ?: 1), movementId)
+                store.save(EntryInput(
+                    type = value.type,
+                    name = value.name.trim(),
+                    amountCents = requireNotNull(money.cents),
+                    category = if (value.type == MovementType.EXPENSE) value.category else null,
+                    date = value.date,
+                    monthly = value.monthly,
+                    startPeriod = period ?: YearMonth.from(value.date),
+                    habitualDay = day ?: 1), movementId)
                 mutable.value = mutable.value.copy(saving = false, saved = true)
             } catch (e: CancellationException) { throw e
             } catch (_: Exception) {
