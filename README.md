@@ -93,7 +93,12 @@ O projeto usa **Gradle Wrapper 9.5.0** e **Android Gradle Plugin 9.3.2**. Config
 
 A compatibilidade de compilação declarada é **Java 17**. O ambiente Gradle local investigado utiliza **JDK 21**; isso registra a configuração utilizada, sem estabelecer JDK 21 como requisito universal.
 
-1. Clone este repositório.
+1. Clone este repositório:
+
+   ```sh
+   git clone https://github.com/Maiquel-Devs/clareza-financeira.git
+   cd clareza-financeira
+   ```
 2. Abra a pasta raiz no Android Studio.
 3. Configure o JDK do Gradle e sincronize usando o Wrapper incluído no projeto, sem substituir sua versão.
 4. Disponibilize o **Android SDK Platform 37** pelo SDK Manager e conclua a sincronização. O módulo declara `compileSdk = 37` e `targetSdk = 37`.
@@ -101,6 +106,10 @@ A compatibilidade de compilação declarada é **Java 17**. O ambiente Gradle lo
 6. Execute o módulo **app** pelo Android Studio.
 
 A sincronização inicial precisa baixar as dependências. Não há backend ou conta do produto para configurar. O namespace e o applicationId são `com.clarezafinanceira.app`.
+
+O caminho do SDK é local: deixe o Android Studio criar `local.properties` ou configure `ANDROID_HOME` para o SDK instalado. Não versione `local.properties`. Para usar o terminal, configure `JAVA_HOME` para um JDK compatível com o Gradle/AGP do projeto. O build debug usa a assinatura de desenvolvimento gerada localmente pelo Android SDK; não exige uma chave privada do mantenedor.
+
+Para gerar o APK debug pelo terminal, use `.\gradlew.bat assembleDebug` no Windows ou `./gradlew assembleDebug` no macOS/Linux. O resultado fica em `app/build/outputs/apk/debug/`.
 
 ## Testes
 
@@ -113,7 +122,7 @@ No Windows / PowerShell, execute na raiz do projeto:
 .\gradlew.bat test build lint
 ```
 
-O primeiro comando executa os testes unitários debug; o segundo reúne testes, build e lint. Em macOS/Linux, o equivalente convencional do Wrapper é `./gradlew`. A homologação registrada foi realizada no ambiente Windows; a contagem acima é um marco documentado, não um status de execução contínua.
+O primeiro comando executa os testes unitários debug; o segundo reúne testes, build e lint e pode ser reservado para uma validação ampla. Em macOS/Linux, use `./gradlew testDebugUnitTest` ou `./gradlew test build lint`, respectivamente. A homologação registrada foi realizada no ambiente Windows; a contagem acima é um marco documentado, não um status de execução contínua.
 
 ## Documentação
 
@@ -135,9 +144,7 @@ Os documentos consolidados descrevem o estado atual. A pasta [historico](docs/hi
 
 ## Open source
 
-O Clareza Financeira adotou oficialmente a **MIT License**. O código será preparado para abertura e colaboração durante a próxima fase de refinamentos e preparação para open source.
-
-Essa preparação ainda poderá incluir revisão de segurança e privacidade do repositório, comentários úteis, limpeza para publicação e documentação para contribuidores, incluindo um futuro `CONTRIBUTING.md`.
+O Clareza Financeira adota a **MIT License**. Consulte o [guia de contribuição](CONTRIBUTING.md) para preparar o ambiente, validar uma alteração e abrir um Pull Request.
 
 ## Licença
 

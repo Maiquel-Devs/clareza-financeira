@@ -56,6 +56,8 @@ class FinancialEntryRepository(
         val old = dao.exceptionFor(id, period)
         val now = clock.instant()
         if (permanent) {
+            // Start from the version active in this period, not its monthly overrides.
+            // Keep later milestones: a historical edit must not replace future decisions.
             dao.putVersion(base.copy(id = if (base.validFrom == period) base.id else newId(),
                 validFrom = period, name = patch.name ?: base.name,
                 amountCents = patch.amountCents ?: base.amountCents,
@@ -96,6 +98,8 @@ class FinancialEntryRepository(
         // Repeating a stop must never extend an already closed lifecycle.
         dao.stop(id, minOf(parent.endPeriod ?: end, end), clock.instant())
         if (!keepPeriod && period == parent.startPeriod) {
+            // The inclusive end cannot precede the start; exclude the first occurrence
+            // explicitly so stopping here keeps a valid interval without including this month.
             val old = dao.exceptionFor(id, period)
             val now = clock.instant()
             dao.putException(RecurrenceExceptionEntity(old?.id ?: newId(), id, period,

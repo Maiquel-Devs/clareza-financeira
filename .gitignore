@@ -13,6 +13,28 @@ local.properties
 **/build/
 app/build/
 
-# Keep the prototype versionable, including its own files
-!/Prototipo/
-!/Prototipo/**
+# Private signing material and configuration
+*.jks
+*.keystore
+*.p12
+*.pfx
+keystore.properties
+signing.properties
+
+# Local environment (sanitized examples may be committed)
+.env
+.env.*
+!.env.example
+
+# Generated packages and local database copies
+*.apk
+*.aab
+*.db
+*.db-shm
+*.db-wal
+*.sqlite
+*.sqlite3
+
+# Local OS files
+.DS_Store
+Thumbs.db
