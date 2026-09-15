@@ -225,7 +225,7 @@ Os testes estão em `app/src/test/`, organizados por domínio, dados e apresenta
 
 O build habilita recursos Android nos testes locais e inclui ferramentas de teste Compose. Esses testes não exigem emulador; as validações visuais manuais registradas na documentação complementam sua cobertura. Previews debug não gravam dados e não substituem testes.
 
-A referência de homologação do MVP é **278 testes, 0 falhas, 0 erros e 0 ignorados**, conforme o resultado informado e os registros de validação existentes. Essa contagem é um marco de homologação, não uma nova execução nesta consolidação documental.
+A referência técnica atual é o REF06A: **301 testes em 29 classes, todos aprovados, com 0 falhas, 0 erros e 0 ignorados**. Builds Debug e Release foram aprovados; o Android Lint registrou 0 erros e 11 warnings de versões disponíveis. O [registro do RC1](produto-atual.md#estado-atual) reúne também a aprovação física do REF06B e as observações conhecidas. O marco anterior de **278 testes** permanece na [fotografia histórica do MVP](estado-do-mvp.md); estes resultados não representam nova execução no fechamento documental REF06C.
 
 ## 14. Limites da arquitetura atual
 

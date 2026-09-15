@@ -162,11 +162,28 @@ Os itens abaixo são limites de escopo, não funcionalidades faltantes nem prome
 
 ## Estado atual
 
-**CLAREZA FINANCEIRA — MVP CONCLUÍDO.**
+**Clareza Financeira RC1 — APROVADO.**
 
-A homologação FEAT 11 terminou como **APROVADO COM OBSERVAÇÕES**, com confirmação de que o produto pode ser declarado MVP concluído. Esse estado se refere ao escopo homologado; não significa publicação em loja.
+O MVP, os refinamentos pós-MVP planejados para esta versão, a preparação open source e o Release Candidate Gate (REF06) estão concluídos. O encerramento da FEAT 11 permanece registrado como fotografia histórica em [estado do MVP](estado-do-mvp.md).
 
-O resultado foi apresentado na homologação e confirmado para esta consolidação. Ainda não há um arquivo específico da FEAT 11 em `docs/`; o resultado técnico e suas observações estão registrados em [estado do MVP](estado-do-mvp.md).
+### Fechamento do REF06
+
+| Etapa | Resultado aprovado |
+| --- | --- |
+| REF06A — homologação técnica | **APROVADO COM OBSERVAÇÕES PARA HOMOLOGAÇÃO FÍSICA.** 301 testes em 29 classes: 301 aprovados, 0 falhas, 0 erros e 0 ignorados. Builds Debug e Release aprovados. Android Lint: 0 erros e 11 warnings, somente de versões disponíveis de ferramentas/dependências. Política de privacidade/backup preservada, nenhum bloqueador técnico e working tree limpo ao final da homologação. |
+| REF06B — homologação física | **APROVADO.** Aplicativo instalado e testado em dispositivo Android físico, sem crash ou bloqueador encontrado. |
+| Resultado final | **RC1 aprovado**, sem bloqueadores conhecidos. |
+
+O REF06A executou `.\gradlew.bat test assembleDebug assembleRelease lint --rerun-tasks --console=plain`. O REF06B, conforme validação manual informada pelo desenvolvedor, cobriu inicialização, Dashboard, preservação dos dados existentes, período atual e indicadores financeiros; criação, edição e exclusão de despesa pontual com atualização da análise; criação de recorrência, edição somente da ocorrência do período e interrupção preservando o período atual; Histórico, navegação por período, gráficos anual e de despesas, tela Sobre, abertura da página do projeto e navegação geral. O REF06C registra esses resultados, sem nova execução técnica ou física.
+
+### Observações conhecidas e próximo passo
+
+- O APK Release gerado permanece **não assinado**; a assinatura será tratada na preparação para distribuição.
+- Os 11 warnings de versões disponíveis não bloqueiam o RC1.
+- O build apresentou aviso de remoção de símbolos de `libandroidx.graphics.path.so`; a biblioteca foi empacotada como fornecida, sem impedir o build.
+- O `gradlew` está registrado no Git sem permissão executável (`100644`), ressalva para sua execução direta em Unix identificada no REF06A.
+
+O próximo passo é a **preparação para distribuição pública**. Validação com usuários reais e v1.0 permanecem futuras. RC1 não é v1.0 e sua aprovação não declara distribuição pública ou publicação em loja concluída.
 
 ## Referências internas
 

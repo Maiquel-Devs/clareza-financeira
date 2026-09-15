@@ -8,7 +8,8 @@ Um aplicativo Android para ajudar a pessoa a entender rapidamente sua situação
 ![Kotlin](https://img.shields.io/badge/Kotlin-7F52FF?style=flat)
 ![Jetpack Compose](https://img.shields.io/badge/Jetpack_Compose-4285F4?style=flat)
 [![MVP concluído](https://img.shields.io/badge/MVP-conclu%C3%ADdo-2E7D32?style=flat)](docs/estado-do-mvp.md)
-[![Homologação: 278 testes](https://img.shields.io/badge/Homologa%C3%A7%C3%A3o-278_testes-2E7D32?style=flat)](docs/estado-do-mvp.md)
+[![RC1 aprovado](https://img.shields.io/badge/RC1-aprovado-2E7D32?style=flat)](docs/produto-atual.md#estado-atual)
+[![Homologação: 301 testes](https://img.shields.io/badge/Homologa%C3%A7%C3%A3o-301_testes-2E7D32?style=flat)](docs/produto-atual.md#estado-atual)
 [![License MIT](https://img.shields.io/badge/License-MIT-546E7A?style=flat)](LICENSE)
 
 <p align="center">
@@ -81,13 +82,15 @@ As dependências são compostas manualmente. Veja responsabilidades e decisões 
 
 ## Estado do projeto
 
-**MVP CONCLUÍDO — FEAT 00–11 concluídas.**
+**Clareza Financeira RC1 — APROVADO.**
 
-**Homologação: APROVADO COM OBSERVAÇÕES**, sem bloqueadores ou regressões funcionais confirmadas que impedissem o encerramento. O marco técnico é de **278 testes em 25 classes, com 0 failures, 0 errors e 0 ignored**.
+O MVP (FEAT 00–11), os refinamentos pós-MVP planejados para esta versão, a preparação open source e o Release Candidate Gate (REF06) estão concluídos.
 
-MVP concluído não significa distribuição pública concluída. O aplicativo ainda passará por refinamentos, preparação para open source, preparação para distribuição e beta. O build release foi aprovado, mas a assinatura definitiva e a preparação do artefato para distribuição ainda estão pendentes.
+O REF06A foi **APROVADO COM OBSERVAÇÕES PARA HOMOLOGAÇÃO FÍSICA**: **301/301 testes aprovados**, sem falhas, erros ou ignorados; builds Debug e Release aprovados; Android Lint com **0 erros e 11 warnings**, somente de versões disponíveis. O REF06B foi **APROVADO** após instalação e validação em dispositivo Android físico, sem crash ou bloqueador encontrado. Não existem bloqueadores conhecidos para o RC1.
 
-As observações e evidências de encerramento estão em [estado do MVP](docs/estado-do-mvp.md).
+O próximo passo é a **preparação para distribuição pública**. O APK Release gerado ainda está **não assinado**; assinatura e preparação do artefato permanecem pendentes. RC1 é uma versão candidata, não a v1.0 nem uma declaração de distribuição pública ou publicação em loja concluída.
+
+O [registro do RC1](docs/produto-atual.md#estado-atual) reúne os resultados e observações. O [estado do MVP](docs/estado-do-mvp.md) preserva a fotografia histórica do encerramento após a FEAT 11.
 
 ## Como executar
 
@@ -115,7 +118,7 @@ Para gerar o APK debug pelo terminal, use `.\gradlew.bat assembleDebug` no Windo
 
 ## Testes
 
-O marco homologado reúne **278 testes em 25 classes**, com **0 failures, 0 errors e 0 ignored**. A suíte cobre regras financeiras, persistência, repositories, estado, formulários, navegação e apresentação; os testes locais ficam em `app/src/test/` e não exigem emulador.
+O REF06A homologou **301 testes em 29 classes, todos aprovados**, com **0 falhas, 0 erros e 0 ignorados**. A suíte cobre regras financeiras, persistência, repositories, estado, formulários, navegação, apresentação e política de backup; os testes locais ficam em `app/src/test/` e não exigem emulador.
 
 No Windows / PowerShell, execute na raiz do projeto:
 
@@ -130,19 +133,19 @@ O primeiro comando executa os testes unitários debug; o segundo reúne testes, 
 
 | Documento | Conteúdo |
 | --- | --- |
-| [Produto atual](docs/produto-atual.md) | Visão, capacidades e escopo do produto |
+| [Produto atual](docs/produto-atual.md) | Visão, capacidades, escopo e registro do RC1 |
 | [Regras do produto](docs/regras-do-produto.md) | Invariantes e comportamento financeiro |
 | [Arquitetura atual](docs/arquitetura-atual.md) | Organização técnica e responsabilidades |
 | [Fluxos e UX](docs/fluxos-e-ux.md) | Experiência, navegação e decisões de interface |
-| [Estado do MVP](docs/estado-do-mvp.md) | Homologação, observações e próximas fases |
+| [Estado do MVP](docs/estado-do-mvp.md) | Fotografia histórica da homologação e das observações após a FEAT 11 |
 
 Os documentos consolidados descrevem o estado atual. A pasta [historico](docs/historico/) preserva os registros da evolução e das etapas de implementação; [tecnico](docs/tecnico/) reúne documentação técnica específica de apoio, com contexto das entregas originais.
 
 ## Roadmap
 
-**MVP concluído → Consolidação → Refinamentos pós-MVP + preparação para open source → Preparação para distribuição → Beta com usuários reais → Decidir evolução e publicação pública**
+**MVP concluído → Consolidação concluída → Refinamentos pós-MVP + preparação open source concluídos → Release Candidate Gate concluído → RC1 aprovado → Preparação para distribuição pública → Validação com usuários reais → v1.0**
 
-**MVP: concluído. Consolidação: concluída. Próxima fase: Refinamentos pós-MVP + preparação para open source.** As demais fases permanecem futuras, e a evolução e eventual publicação pública serão decididas a partir do feedback real. Os assuntos pós-MVP são candidatos a avaliação, não funcionalidades faltantes do MVP nem um backlog fechado.
+**Próximo passo: preparação para distribuição pública.** A validação com usuários reais e a v1.0 são etapas futuras. A evolução do produto será orientada pelo feedback real; a aprovação do RC1 não conclui essas etapas.
 
 ## Open source
 
